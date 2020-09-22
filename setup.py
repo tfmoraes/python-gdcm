@@ -15,13 +15,22 @@ CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 CMAKE_EXE = os.environ.get('CMAKE_EXE', shutil.which('cmake'))
-BUILD_DIR = os.environ.get('BUILD_DIR', "/tmp/bin")
-GDCM_SOURCE =  os.environ.get('BUILD_DIR', "/tmp/src")
+BUILD_DIR = os.environ.get('BUILD_DIR', "/tmp/gdcm_bin")
+GDCM_SOURCE =  os.path.join(CURRENT_DIR, "gdcm_src")
 GDCM_MODULE = os.path.join(CURRENT_DIR, "_gdcm")
-os.makedirs(GDCM_MODULE, exist_ok=True)
 
-with open(os.path.join(GDCM_MODULE, '__init__.py'), 'w') as f:
-    f.write('')
+os.makedirs(BUILD_DIR, exist_ok=True)
+
+
+# See https://stackoverflow.com/a/50357801/115612
+def get_libpython():
+    v = sysconfig.get_config_vars()
+    fpaths = [os.path.join(v[pv], v['LDLIBRARY']) for pv in ('LIBDIR', 'LIBPL')]
+    for fpath in fpaths:
+        if os.path.exists(fpath):
+            return fpath
+    return ""
+
 
 class ConfiguredCMakeExtension(setuptools.Extension):
     def __init__(self, name, target=None):
@@ -35,6 +44,10 @@ class ConfiguredCMakeExtension(setuptools.Extension):
 class CMakeBuildExt(build_ext):
     def build_extension(self, ext):
         if isinstance(ext, ConfiguredCMakeExtension):
+            libpython = get_libpython()
+            if not libpython:
+                libpython = sys.executable
+
             output_dir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
             subprocess.check_call([
                 CMAKE_EXE,
@@ -43,7 +56,7 @@ class CMakeBuildExt(build_ext):
                 "-DGDCM_WRAP_PYTHON=ON",
                 "-DPYTHON_EXECUTABLE=%s" % sys.executable,
                 "-DPYTHON_INCLUDE_DIR=%s" % sysconfig.get_paths()['platinclude'],
-                "-DPYTHON_LIBRARY=%s" % sys.executable,
+                "-DPYTHON_LIBRARY=%s" % libpython,
                 "-DGDCM_BUILD_SHARED_LIBS=ON",
                 "-DEXECUTABLE_OUTPUT_PATH=%s" % GDCM_MODULE,
                 "-DLIBRARY_OUTPUT_PATH=%s" %  GDCM_MODULE,
