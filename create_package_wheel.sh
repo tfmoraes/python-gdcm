@@ -30,14 +30,14 @@ make
 make install
 
 
-mkdir -p "$gdcmsrc"
-cd /tmp/
-curl -LO "https://github.com/malaterre/GDCM/archive/v$gdcm_ver.tar.gz"
-tar --strip-components=1 -C "$gdcmsrc" -xzf "v$gdcm_ver.tar.gz"
+# mkdir -p "$gdcmsrc"
+# cd /tmp/
+# curl -LO "https://github.com/malaterre/GDCM/archive/v$gdcm_ver.tar.gz"
+# tar --strip-components=1 -C "$gdcmsrc" -xzf "v$gdcm_ver.tar.gz"
 
 export PATH="/opt/cmake/bin:$PATH"
 
-for pyver in 38; do
+for pyver in 36 37 38 39; do
     suffix=""
     [ "$pyver" -le 37 ] && suffix="m"
     pyroot="/opt/python/cp$pyver-cp$pyver$suffix"
