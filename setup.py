@@ -47,15 +47,22 @@ class CMakeBuildExt(build_ext):
                 os.path.dirname(self.get_ext_fullpath(ext.name))
             )
 
+            my_env = os.environ.copy()
+            try:
+                my_env["LDFLAGS"] += "-undefined dynamic_lookup"
+            except KeyError:
+                my_env["LDFLAGS"] = "-undefined dynamic_lookup"
+
             subprocess.check_call(
                 [
                     CMAKE_EXE,
                     "-GNinja",
                     "-DCMAKE_BUILD_TYPE:STRING=Release",
-                    "-DGDCM_BUILD_APPLICATIONS=OFF",
-                    "-DGDCM_DOCUMENTATION=OFF",
-                    "-DGDCM_BUILD_SHARED_LIBS=ON",
-                    "-DGDCM_WRAP_PYTHON=ON",
+                    "-DGDCM_BUILD_APPLICATIONS:BOOL=OFF",
+                    "-DGDCM_DOCUMENTATION:BOOL=OFF",
+                    "-DGDCM_BUILD_SHARED_LIBS:BOOL=ON",
+                    "-DGDCM_WRAP_PYTHON:BOOL=ON",
+                    "-DGDCM_NO_PYTHON_LIBS_LINKING:BOOL=ON",
                     "-DGDCM_BUILD_DOCBOOK_MANPAGES:BOOL=OFF",
                     "-DPYTHON_EXECUTABLE=%s" % sys.executable,
                     "-DPYTHON_INCLUDE_DIR=%s" % sysconfig.get_paths()["platinclude"],
@@ -63,13 +70,15 @@ class CMakeBuildExt(build_ext):
                     "-SWIG_EXECUTABLE=%s" % SWIG_EXE,
                     "-DEXECUTABLE_OUTPUT_PATH=%s" % output_dir,
                     "-DLIBRARY_OUTPUT_PATH=%s" % output_dir,
-                    '-DCMAKE_CXX_FLAGS="-undefined dynamic_lookup"',
                     GDCM_SOURCE,
                 ],
+                env=my_env,
                 cwd=BUILD_DIR,
             )
 
-            subprocess.check_call([CMAKE_EXE, "--build", BUILD_DIR], cwd=BUILD_DIR)
+            subprocess.check_call(
+                [CMAKE_EXE, "--build", BUILD_DIR], env=my_env, cwd=BUILD_DIR
+            )
 
             if sys.platform.startswith("linux"):
                 for shared_lib in glob.glob(os.path.join(output_dir, "*.so")):
@@ -95,10 +104,16 @@ setuptools.setup(
     long_description="Grassroots DiCoM is a C++ library for DICOM medical files. It is automatically wrapped to python/C#/Java (using swig). It supports RAW,JPEG (lossy/lossless),J2K,JPEG-LS, RLE and deflated. It also comes with DICOM Part 3,6 & 7 of the standard as XML files.",
     url="https://github.com/malaterre/GDCM",
     license="BSD",
-    py_modules=["gdcm",],
-    packages=["_gdcm",],
+    py_modules=[
+        "gdcm",
+    ],
+    packages=[
+        "_gdcm",
+    ],
     ext_package="_gdcm",
-    ext_modules=[ConfiguredCMakeExtension("_gdcm", target="_gdcm"),],
+    ext_modules=[
+        ConfiguredCMakeExtension("_gdcm", target="_gdcm"),
+    ],
     package_data={
         "_gdcm": [
             "*.py",
@@ -118,7 +133,9 @@ setuptools.setup(
             "*.dll",
         ],
     },
-    cmdclass={"build_ext": CMakeBuildExt,},
+    cmdclass={
+        "build_ext": CMakeBuildExt,
+    },
     # data_files =[(site_packages_path, ['gdcm.pth',])],
     include_package_data=True,
     #  distclass=BinaryDistribution,
