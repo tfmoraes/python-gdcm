@@ -56,6 +56,7 @@ class CMakeBuildExt(build_ext):
                     "-DGDCM_DOCUMENTATION=OFF",
                     "-DGDCM_BUILD_SHARED_LIBS=ON",
                     "-DGDCM_WRAP_PYTHON=ON",
+                    "-DGDCM_BUILD_DOCBOOK_MANPAGES:BOOL=OFF",
                     "-DPYTHON_EXECUTABLE=%s" % sys.executable,
                     "-DPYTHON_INCLUDE_DIR=%s" % sysconfig.get_paths()["platinclude"],
                     "-DPYTHON_LIBRARY=%s" % libpython,
