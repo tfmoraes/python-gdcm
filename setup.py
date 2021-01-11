@@ -63,6 +63,7 @@ class CMakeBuildExt(build_ext):
                     "-SWIG_EXECUTABLE=%s" % SWIG_EXE,
                     "-DEXECUTABLE_OUTPUT_PATH=%s" % output_dir,
                     "-DLIBRARY_OUTPUT_PATH=%s" % output_dir,
+                    '-DCMAKE_CXX_FLAGS="-undefined dynamic_lookup"',
                     GDCM_SOURCE,
                 ],
                 cwd=BUILD_DIR,
