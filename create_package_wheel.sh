@@ -37,7 +37,7 @@ make install
 
 export PATH="/opt/cmake/bin:$PATH"
 
-for pyver in 37 38 39; do
+for pyver in 36 37 38 39; do
     suffix=""
     [ "$pyver" -le 37 ] && suffix="m"
     pyroot="/opt/python/cp$pyver-cp$pyver$suffix"
@@ -45,7 +45,6 @@ for pyver in 37 38 39; do
     rm -rf build
     rm -rf gdcm.egg-info
     "$pyroot/bin/python" setup.py bdist_wheel
-    #  mv -v wheelhouse/*.whl dist/*.whl "$gdcmout"
 done
 
 for i in $(find . -name "*.whl"); do

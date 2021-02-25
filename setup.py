@@ -69,42 +69,46 @@ class CMakeBuildExt(build_ext):
                 except KeyError:
                     my_env["LDFLAGS"] = "-undefined dynamic_lookup"
 
+            cmake_args = [
+                "-DCMAKE_BUILD_TYPE:STRING=Release",
+                "-DGDCM_BUILD_APPLICATIONS:BOOL=OFF",
+                "-DGDCM_DOCUMENTATION:BOOL=OFF",
+                "-DGDCM_BUILD_SHARED_LIBS:BOOL=ON",
+                "-DGDCM_WRAP_PYTHON:BOOL=ON",
+                "-DGDCM_NO_PYTHON_LIBS_LINKING:BOOL=ON",
+                "-DGDCM_BUILD_DOCBOOK_MANPAGES:BOOL=OFF",
+                "-DPYTHON_EXECUTABLE=%s" % sys.executable,
+                "-DPYTHON_INCLUDE_DIR=%s" % sysconfig.get_paths()["platinclude"],
+                "-DPYTHON_LIBRARY=%s" % libpython,
+                "-SWIG_EXECUTABLE=%s" % SWIG_EXE,
+                "-DEXECUTABLE_OUTPUT_PATH=%s" % output_dir,
+                "-DLIBRARY_OUTPUT_PATH=%s" % output_dir,
+            ]
+
             subprocess.check_call(
-                [
-                    CMAKE_EXE,
-                    "-GNinja",
-                    "-DCMAKE_BUILD_TYPE:STRING=Release",
-                    "-DGDCM_BUILD_APPLICATIONS:BOOL=OFF",
-                    "-DGDCM_DOCUMENTATION:BOOL=OFF",
-                    "-DGDCM_BUILD_SHARED_LIBS:BOOL=ON",
-                    "-DGDCM_WRAP_PYTHON:BOOL=ON",
-                    "-DGDCM_NO_PYTHON_LIBS_LINKING:BOOL=ON",
-                    "-DGDCM_BUILD_DOCBOOK_MANPAGES:BOOL=OFF",
-                    "-DPYTHON_EXECUTABLE=%s" % sys.executable,
-                    "-DPYTHON_INCLUDE_DIR=%s" % sysconfig.get_paths()["platinclude"],
-                    "-DPYTHON_LIBRARY=%s" % libpython,
-                    "-SWIG_EXECUTABLE=%s" % SWIG_EXE,
-                    "-DEXECUTABLE_OUTPUT_PATH=%s" % output_dir,
-                    "-DLIBRARY_OUTPUT_PATH=%s" % output_dir,
-                    GDCM_SOURCE,
-                ],
+                [CMAKE_EXE, "-GNinja", ] + cmake_args + [GDCM_SOURCE, ],
                 env=my_env,
                 cwd=BUILD_DIR,
             )
 
             subprocess.check_call(
-                [CMAKE_EXE, "--build", BUILD_DIR], env=my_env, cwd=BUILD_DIR
+                [CMAKE_EXE, "--build", BUILD_DIR, ],
+                env=my_env,
+                cwd=BUILD_DIR
             )
 
             if sys.platform.startswith("linux"):
                 shared_libs = glob.glob(os.path.join(output_dir, "*.so*"))
                 shared_libs_names = [os.path.basename(i) for i in shared_libs]
                 for shared_lib in shared_libs:
-                    relocate(str(shared_lib), shared_libs_names)
+                    #  relocate(str(shared_lib), shared_libs_names)
+                    subprocess.check_call(
+                        ["patchelf", "--set-rpath", "$ORIGIN", shared_lib]
+                    )
             elif sys.platform == 'darwin':
                 for shared_lib in glob.glob(os.path.join(output_dir, "*.so")):
                     subprocess.check_call(
-                        ["patchelf", "--set-rpath", "@loader_path", shared_lib]
+                        ["install_name_tool", "--add-rpath", "@loader_path", shared_lib]
                     )
             shutil.rmtree(BUILD_DIR)
         else:
