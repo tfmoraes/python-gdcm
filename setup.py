@@ -5,6 +5,7 @@ import subprocess
 import sys
 import sysconfig
 import tempfile
+import typing
 
 import setuptools
 from setuptools.command.build_ext import build_ext
@@ -25,6 +26,20 @@ def get_libpython():
         if os.path.exists(fpath):
             return fpath
     return ""
+
+
+def get_needed(shared_lib: str):
+    output = subprocess.run(
+        ["patchelf", "--print-needed", shared_lib], capture_output=True
+    )
+    return output.stdout.decode("utf8").split("\n")
+
+
+def relocate(shared_lib: str, shared_libs_names: typing.List[str]):
+    for needed in get_needed(shared_lib):
+        needed = os.path.basename(needed)
+        if needed in shared_libs_names:
+            print(subprocess.run(["patchelf", "--replace-needed", needed, f"$ORIGIN/{needed}", shared_lib,]))
 
 
 class ConfiguredCMakeExtension(setuptools.Extension):
@@ -72,7 +87,7 @@ class CMakeBuildExt(build_ext):
                     "-DLIBRARY_OUTPUT_PATH=%s" % output_dir,
                     GDCM_SOURCE,
                 ],
-                env=my_env,
+                #  env=my_env,
                 cwd=BUILD_DIR,
             )
 
@@ -81,10 +96,10 @@ class CMakeBuildExt(build_ext):
             )
 
             if sys.platform.startswith("linux"):
-                for shared_lib in glob.glob(os.path.join(output_dir, "*.so")):
-                    subprocess.check_call(
-                        ["patchelf", "--set-rpath", "$ORIGIN", shared_lib]
-                    )
+                shared_libs = glob.glob(os.path.join(output_dir, "*.so*"))
+                shared_libs_names = [os.path.basename(i) for i in shared_libs]
+                for shared_lib in shared_libs:
+                    relocate(str(shared_lib), shared_libs_names)
             else:
                 for shared_lib in glob.glob(os.path.join(output_dir, "*.so")):
                     subprocess.check_call(
