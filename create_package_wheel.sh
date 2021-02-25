@@ -7,7 +7,7 @@ readonly gdcmout="$gdcmroot/out"
 readonly gdcmpy="$gdcmroot/_gdcm"
 readonly cmake_ver="3.17.3"
 readonly swig_ver="4.0.2"
-readonly gdcm_ver="3.0.7"
+readonly gdcm_ver="3.0.8"
 
 mkdir -p "$gdcmout"
 
@@ -37,31 +37,18 @@ make install
 
 export PATH="/opt/cmake/bin:$PATH"
 
-for pyver in 36 37 38 39; do
+for pyver in 37 38 39; do
     suffix=""
     [ "$pyver" -le 37 ] && suffix="m"
     pyroot="/opt/python/cp$pyver-cp$pyver$suffix"
-    rm -rf "$gdcmbin"
-    mkdir -p "$gdcmbin"
-    mkdir -p "$gdcmpy"
-    touch "$gdcmpy"/__init__.py
-    cd "$gdcmbin"
-    include="$pyroot/include"
-    pyinclude=`ls $include | head -n 1`
-    #  /opt/cmake/bin/cmake -GNinja \
-        #  -DCMAKE_BUILD_TYPE:STRING=Release \
-        #  -DGDCM_WRAP_PYTHON=ON \
-        #  -DPYTHON_EXECUTABLE="$pyroot/bin/python" \
-        #  -DPYTHON_INCLUDE_DIR="$include/$pyinclude" \
-        #  -DPYTHON_LIBRARY="$pyroot/bin/python" \
-        #  -DGDCM_BUILD_SHARED_LIBS=ON \
-        #  -DEXECUTABLE_OUTPUT_PATH="$gdcmpy" \
-        #  -DLIBRARY_OUTPUT_PATH="$gdcmpy" \
-        #  "$gdcmsrc"
-    #  ninja-build
     cd "$gdcmroot"
+    rm -rf build
+    rm -rf gdcm.egg-info
     "$pyroot/bin/python" setup.py bdist_wheel
-    #  auditwheel addtag dist/*.whl
-    #  auditwheel repair dist/*.whl
     #  mv -v wheelhouse/*.whl dist/*.whl "$gdcmout"
+done
+
+for i in $(find . -name "*.whl"); do
+    auditwheel addtag $i
+    auditwheel repair $i
 done

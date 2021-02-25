@@ -63,10 +63,11 @@ class CMakeBuildExt(build_ext):
             )
 
             my_env = os.environ.copy()
-            try:
-                my_env["LDFLAGS"] += "-undefined dynamic_lookup"
-            except KeyError:
-                my_env["LDFLAGS"] = "-undefined dynamic_lookup"
+            if sys.platform == 'darwin':
+                try:
+                    my_env["LDFLAGS"] += "-undefined dynamic_lookup"
+                except KeyError:
+                    my_env["LDFLAGS"] = "-undefined dynamic_lookup"
 
             subprocess.check_call(
                 [
@@ -87,7 +88,7 @@ class CMakeBuildExt(build_ext):
                     "-DLIBRARY_OUTPUT_PATH=%s" % output_dir,
                     GDCM_SOURCE,
                 ],
-                #  env=my_env,
+                env=my_env,
                 cwd=BUILD_DIR,
             )
 
@@ -100,7 +101,7 @@ class CMakeBuildExt(build_ext):
                 shared_libs_names = [os.path.basename(i) for i in shared_libs]
                 for shared_lib in shared_libs:
                     relocate(str(shared_lib), shared_libs_names)
-            else:
+            elif sys.platform == 'darwin':
                 for shared_lib in glob.glob(os.path.join(output_dir, "*.so")):
                     subprocess.check_call(
                         ["patchelf", "--set-rpath", "@loader_path", shared_lib]
@@ -112,7 +113,7 @@ class CMakeBuildExt(build_ext):
 
 setuptools.setup(
     name="gdcm",
-    version="3.0.7",
+    version="3.0.8",
     author="Mathieu Malaterre",
     author_email="mathieu.malaterre@gmail.com",
     description="Grassroots DICOM runtime libraries",
@@ -166,7 +167,6 @@ setuptools.setup(
         "Programming Language :: C",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3 :: Only",
