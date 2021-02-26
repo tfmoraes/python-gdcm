@@ -180,7 +180,7 @@ setuptools.setup(
         "Environment :: Console",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: Apache License 2.0",
+        "License :: OSI Approved :: Apache Software License",
         "Programming Language :: C",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",

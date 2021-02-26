@@ -1,1 +1,2 @@
 recursive-include gdcm_src *
+recursive-exclude gdcm_src/Testing *
