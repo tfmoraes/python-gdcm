@@ -108,7 +108,7 @@ class CMakeBuildExt(build_ext):
             elif sys.platform == 'darwin':
                 for shared_lib in glob.glob(os.path.join(output_dir, "*.so")):
                     subprocess.check_call(
-                        ["install_name_tool", "--add-rpath", "@loader_path", shared_lib]
+                        ["install_name_tool", "-add_rpath", "@loader_path", shared_lib]
                     )
             shutil.rmtree(BUILD_DIR)
         else:
