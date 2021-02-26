@@ -51,7 +51,6 @@ jobs:
 
           CIBW_BEFORE_ALL_MACOS: |
             git submodule update --init --recursive
-            ls -lR
             brew install swig ninja cmake
 
         run: python -m cibuildwheel --output-dir wheelhouse
