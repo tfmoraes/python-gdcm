@@ -45,6 +45,7 @@ jobs:
             pip install cmake ninja
 
           CIBW_BEFORE_ALL_MACOS: |
+            ls -lR
             brew install swig
             pip install cmake ninja
 
