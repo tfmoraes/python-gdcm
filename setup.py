@@ -27,6 +27,16 @@ def get_libpython():
             return fpath
     return ""
 
+def get_libpython2():
+    d = setuptools.Distribution()
+    b = build_ext(d)
+    b.finalize_options()
+    fpaths = b.library_dirs
+    for fpath in fpaths:
+        fpath = os.path.join(fpath, "python%s.lib" % sys.version[:3].replace('.', ''))
+        if os.path.exists(fpath):
+            return fpath
+    return ""
 
 def get_needed(shared_lib: str):
     output = subprocess.run(
@@ -54,7 +64,10 @@ class ConfiguredCMakeExtension(setuptools.Extension):
 class CMakeBuildExt(build_ext):
     def build_extension(self, ext):
         if isinstance(ext, ConfiguredCMakeExtension):
-            libpython = get_libpython()
+            try:
+                libpython = get_libpython()
+            except KeyError:
+                libpython = get_libpython2()
             if not libpython:
                 libpython = sys.executable
 
