@@ -48,6 +48,7 @@ jobs:
             choco install swig -f -y
             choco install ninja -f -y
             pip install cmake
+            $Env:Path +=  ";C:\ProgramData\chocolatey\bin"
 
           CIBW_BEFORE_ALL_MACOS: |
             git submodule update --init --recursive
