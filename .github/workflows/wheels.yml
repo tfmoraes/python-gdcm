@@ -30,6 +30,7 @@ jobs:
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
 
           CIBW_BEFORE_ALL_LINUX: |
+            git submodule update --init --recursive
             if [[ ! -e $(command -v swig) ]]; then
             curl -L https://sourceforge.net/projects/swig/files/swig/swig-4.0.2/swig-4.0.2.tar.gz/download --output /tmp/swig.tar.gz
             mkdir /tmp/swig
@@ -41,10 +42,12 @@ jobs:
             pip install cmake ninja
 
           CIBW_BEFORE_ALL_WINDOWS: |
+            git submodule update --init --recursive
             choco install swig -f -y
             pip install cmake ninja
 
           CIBW_BEFORE_ALL_MACOS: |
+            git submodule update --init --recursive
             ls -lR
             brew install swig
             pip install cmake ninja
