@@ -26,9 +26,9 @@ jobs:
 
           CIBW_SKIP: pp* cp27-* cp35-*
 
-          CIBW_ARCHS_MACOS: "x86_64"
-          CIBW_ARCHS_LINUX: "x86_64"
-          CIBW_ARCHS_WINDOWS: "x86_64"
+          CIBW_ARCHS_MACOS: "auto"
+          CIBW_ARCHS_LINUX: "auto"
+          CIBW_ARCHS_WINDOWS: "auto"
 
           CIBW_BEFORE_ALL_LINUX: |
             git submodule update --init --recursive
