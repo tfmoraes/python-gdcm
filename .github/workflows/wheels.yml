@@ -23,6 +23,7 @@ jobs:
         # to supply options, put them in 'env', like:
         env:
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
+          CIBW_MANYLINUX_I686_IMAGE: manylinux2014
 
           CIBW_SKIP: pp* cp27-* cp35-*
 
@@ -32,15 +33,15 @@ jobs:
 
           CIBW_BEFORE_ALL_LINUX: |
             git submodule update --init --recursive
+            yum install -y gcc-c++ ninja-build pcre-devel
             if [[ ! -e $(command -v swig) ]]; then
-            curl -L https://sourceforge.net/projects/swig/files/swig/swig-4.0.2/swig-4.0.2.tar.gz/download --output /tmp/swig.tar.gz
-            mkdir /tmp/swig
-            tar -xvzf /tmp/swig.tar.gz -C /tmp/swig --strip-components 1 &> /dev/null
-            pushd /tmp/swig
-            ./configure --without-alllang --with-python3 && make -j2 && make install > /dev/null
-            popd
+              curl -L https://sourceforge.net/projects/swig/files/swig/swig-4.0.2/swig-4.0.2.tar.gz/download --output /tmp/swig.tar.gz
+              mkdir /tmp/swig
+              tar -xvzf /tmp/swig.tar.gz -C /tmp/swig --strip-components 1 &> /dev/null
+              pushd /tmp/swig
+              ./configure --without-alllang --with-python3 && make -j2 && make install > /dev/null
+              popd
             fi
-            pip install cmake ninja
 
           CIBW_BEFORE_ALL_WINDOWS: |
             git submodule update --init --recursive
