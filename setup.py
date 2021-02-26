@@ -116,10 +116,10 @@ class CMakeBuildExt(build_ext):
 
 
 setuptools.setup(
-    name="gdcm",
+    name="python-gdcm",
     version="3.0.8",
-    author="Mathieu Malaterre",
-    author_email="mathieu.malaterre@gmail.com",
+    author="Thiago Franco de Moraes",
+    author_email="totonixsame@gmail.com",
     description="Grassroots DICOM runtime libraries",
     long_description="Grassroots DiCoM is a C++ library for DICOM medical files. It is automatically wrapped to python/C#/Java (using swig). It supports RAW,JPEG (lossy/lossless),J2K,JPEG-LS, RLE and deflated. It also comes with DICOM Part 3,6 & 7 of the standard as XML files.",
     url="https://github.com/malaterre/GDCM",
