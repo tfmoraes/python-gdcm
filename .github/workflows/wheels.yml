@@ -49,7 +49,7 @@ jobs:
             choco install ninja -f -y
             choco install cmake -f -y
 
-          CIBW_ENVIRONMENT_WINDOWS: "Path += \";C:\\ProgramData\chocolatey\bin\""
+          CIBW_ENVIRONMENT_WINDOWS: "PATH=$PATH;C:\ProgramData\chocolatey\bin\"
 
           CIBW_BEFORE_ALL_MACOS: |
             git submodule update --init --recursive
