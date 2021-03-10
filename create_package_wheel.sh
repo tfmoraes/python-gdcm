@@ -47,7 +47,7 @@ for pyver in 36 37 38 39; do
     "$pyroot/bin/python" setup.py bdist_wheel
 done
 
-for i in $(find . -name "*.whl"); do
+for i in $(find dist/ -name "*.whl"); do
     auditwheel addtag $i
     auditwheel repair $i
 done
