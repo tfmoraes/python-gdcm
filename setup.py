@@ -117,7 +117,7 @@ class CMakeBuildExt(build_ext):
                         ["patchelf", "--set-rpath", "$ORIGIN", shared_lib]
                     )
             elif sys.platform == 'darwin':
-                shared_libs = [f for f in glob.glob(os.path.join(output_dir, "*")) if not f.endswith(".py")]
+                shared_libs = [f for f in glob.glob(os.path.join(output_dir, "*")) if not ( f.endswith(".py") or "dylib" in f)]
                 for shared_lib in shared_libs:
                     subprocess.check_call(
                         ["install_name_tool", "-add_rpath", "@loader_path", shared_lib]
