@@ -13,5 +13,4 @@ import gdcm
 path = os.path.dirname(gdcm.__file__)
 command = [os.path.join(path, "_gdcm", os.path.basename(sys.argv[0]))]
 command.extend(sys.argv[1:])
-print(command)
 subprocess.call(command)
