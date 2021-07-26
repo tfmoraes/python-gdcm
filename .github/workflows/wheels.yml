@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest, macOS-10.15]
-        python: [36, 37, 38, 39]
+        python: [36, 37, 38, 39, 310]
         bitness: [32, 64]
         include:
           # Run 32 and 64 bit version in parallel for Linux and Windows
@@ -60,7 +60,7 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Install cibuildwheel
-        run: python -m pip install cibuildwheel==1.11.0
+        run: python -m pip install cibuildwheel==2.0.0
 
       - name: Build wheels
         # to supply options, put them in 'env', like:
@@ -70,6 +70,9 @@ jobs:
 
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
           CIBW_SKIP: pp* cp27-* cp35-*
+
+          # Include latest Python beta
+          CIBW_PRERELEASE_PYTHONS: True
 
           CIBW_BEFORE_ALL_LINUX: |
             git submodule update --init --recursive
@@ -85,7 +88,7 @@ jobs:
               popd
             fi
 
-          CIBW_BEFORE_ALL_WINDOWS: choco install swig ninja cmake -f -y && git submodule update --init --recursive
+          CIBW_BEFORE_ALL_WINDOWS: choco upgrade chocolatey -y && choco install swig -f -y --no-progress && pip install ninja cmake && git submodule update --init --recursive
 
           CIBW_BEFORE_ALL_MACOS: |
             git submodule update --init --recursive
