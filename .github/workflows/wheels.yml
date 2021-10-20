@@ -94,7 +94,9 @@ jobs:
             git submodule update --init --recursive
             brew install swig ninja cmake
 
-          CIBW_REPAIR_WHEEL_COMMAND_MACOS: delocate-listdeps {wheel} && delocate-wheel -v -w {dest_dir} {wheel}
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: |
+            DYLD_LIBRARY_PATH=$REPAIR_LIBRARY_PATH delocate-listdeps {wheel}
+            DYLD_LIBRARY_PATH=$REPAIR_LIBRARY_PATH delocate-wheel -v -w {dest_dir} {wheel}
 
         run: python -m cibuildwheel --output-dir wheelhouse
 
