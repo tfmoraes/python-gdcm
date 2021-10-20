@@ -95,6 +95,8 @@ jobs:
             brew install swig ninja cmake
 
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: |
+            echo "REPAIR_LIBRARY_PATH $REPAIR_LIBRARY_PATH"
+            ls -l $REPAIR_LIBRARY_PATH
             DYLD_LIBRARY_PATH=$REPAIR_LIBRARY_PATH delocate-listdeps {wheel}
             DYLD_LIBRARY_PATH=$REPAIR_LIBRARY_PATH delocate-wheel -v -w {dest_dir} {wheel}
 
