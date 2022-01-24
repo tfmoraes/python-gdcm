@@ -31,11 +31,13 @@ def get_libpython2():
     d = setuptools.Distribution()
     b = build_ext(d)
     b.finalize_options()
+    version = "".join([str(x) for x in sys.version_info[:2]])
     fpaths = b.library_dirs
     for fpath in fpaths:
-        fpath = os.path.join(fpath, "python%s.lib" % sys.version[:3].replace('.', ''))
+        fpath = os.path.join(fpath, f"python{version}.lib")
         if os.path.exists(fpath):
             return fpath
+
     return ""
 
 def get_needed(shared_lib: str):

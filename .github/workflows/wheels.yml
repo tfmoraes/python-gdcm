@@ -35,17 +35,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-        # Used to host cibuildwheel
-      - name: "Set up python x86"
-        if: matrix.os == 'windows-latest' && matrix.bitness == '32'
-        uses: actions/setup-python@v2
         with:
-          architecture: 'x86'
+          submodules: true
 
-      - name: "Set up python x64"
-        if: matrix.bitness == '64' || matrix.os != 'windows-latest'
-        uses: actions/setup-python@v2
+      - uses: actions/setup-python@v2
+        name: Install Python host for cibuildwheel
+        with:
+          python-version: '3.9'
 
         # Visual Studio
       - name: Set up MSVC x86
@@ -60,22 +56,19 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Install cibuildwheel
-        run: python -m pip install cibuildwheel==2.0.0
+        run: python -m pip install cibuildwheel==2.3.1
 
       - name: Build wheels
         # to supply options, put them in 'env', like:
         env:
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
           CIBW_MANYLINUX_I686_IMAGE: manylinux2014
-
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
-          CIBW_SKIP: pp* cp27-* cp35-*
 
           # Include latest Python beta
           CIBW_PRERELEASE_PYTHONS: True
 
           CIBW_BEFORE_ALL_LINUX: |
-            git submodule update --init --recursive
             yum install -y gcc-c++ pcre-devel
             /opt/python/cp38-cp38/bin/python -m pip install ninja
             ln -s /opt/python/cp38-cp38/bin/ninja /usr/bin/ninja
@@ -84,14 +77,17 @@ jobs:
               mkdir /tmp/swig
               tar -xvzf /tmp/swig.tar.gz -C /tmp/swig --strip-components 1 &> /dev/null
               pushd /tmp/swig
-              ./configure --without-alllang --with-python3 && make -j2 && make install > /dev/null
+              ./configure --without-alllang --with-python3
+              make -j2 && make install > /dev/null
               popd
             fi
 
-          CIBW_BEFORE_ALL_WINDOWS: choco upgrade chocolatey -y && choco install swig -f -y --no-progress && pip install ninja cmake && git submodule update --init --recursive
+          CIBW_BEFORE_ALL_WINDOWS: |
+            choco upgrade chocolatey -y
+            choco install swig -f -y --no-progress
+            pip install ninja cmake
 
           CIBW_BEFORE_ALL_MACOS: |
-            git submodule update --init --recursive
             brew install swig ninja cmake
 
         run: python -m cibuildwheel --output-dir wheelhouse
