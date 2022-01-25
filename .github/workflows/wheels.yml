@@ -126,14 +126,14 @@ jobs:
 
         # Visual Studio
       - name: Set up MSVC x86
-        if: matrix.os == 'windows-latest' && matrix.platform_id == 'win32'
+        if: matrix.platform_id == 'win32'
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x86
 
         # Visual Studio
       - name: Set up MSVC x64
-        if: matrix.os == 'windows-latest' && matrix.platform_id == 'win_amd64'
+        if: matrix.platform_id == 'win_amd64'
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Install cibuildwheel

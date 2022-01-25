@@ -17,32 +17,32 @@ pip install -U python-gdcm
 
 ### From source
 
-###### Install dependencies
+#### Install dependencies
 - Compiler for you platform (GCC, Clang, MSVC)
 - [CMake](https://cmake.org/)
 - [SWIG](http://www.swig.org/)
 - [patchelf](https://github.com/NixOS/patchelf) will also be needed on Linux
 - [Git](https://git-scm.com/) to get the source code
 
-###### Setup environment
+#### Setup environment
 If the `cmake` or `swig` executables aren't in `$PATH`, either add them or create  `CMAKE_EXE` and `SWIG_EXE` envars:
 ```bash
 export CMAKE_EXE="path/to/cmake/executable"
 export SWIG_EXE="path/to/swig/executable"
 ```
 
-###### Clone source
+#### Clone source
 ```bash
 git clone --recurse-submodules https://github.com/tfmoraes/python-gdcm
 ```
 
-###### Build and install
+#### Build and install
 ```bash
 # Note the trailing slash!
 pip install python-gdcm/
 ```
 
-###### Test installed package
+#### Test installed package
 ```bash
 python -c "import gdcm; print(gdcm.GDCM_VERSION)"
 ```
