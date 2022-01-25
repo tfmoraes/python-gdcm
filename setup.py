@@ -1,5 +1,7 @@
+
 import glob
 import os
+import platform
 import shutil
 import subprocess
 import sys
@@ -92,13 +94,21 @@ class CMakeBuildExt(build_ext):
                 "-DGDCM_WRAP_PYTHON:BOOL=ON",
                 "-DGDCM_NO_PYTHON_LIBS_LINKING:BOOL=ON",
                 "-DGDCM_BUILD_DOCBOOK_MANPAGES:BOOL=OFF",
-                "-DPYTHON_EXECUTABLE=%s" % sys.executable,
-                "-DPYTHON_INCLUDE_DIR=%s" % sysconfig.get_paths()["platinclude"],
-                "-DPYTHON_LIBRARY=%s" % libpython,
-                "-SWIG_EXECUTABLE=%s" % SWIG_EXE,
-                "-DEXECUTABLE_OUTPUT_PATH=%s" % output_dir,
-                "-DLIBRARY_OUTPUT_PATH=%s" % output_dir,
+                f"-DPYTHON_EXECUTABLE={sys.executable}",
+                f"-DPYTHON_INCLUDE_DIR={sysconfig.get_paths()['platinclude']}",
+                f"-DPYTHON_LIBRARY={libpython}",
+                f"-DSWIG_EXECUTABLE={SWIG_EXE}",
+                f"-DEXECUTABLE_OUTPUT_PATH={output_dir}",
+                f"-DLIBRARY_OUTPUT_PATH={output_dir}",
             ]
+
+            # platform.machine() may not return 'arm64' for Apple M1 on older
+            # Python versions, or if not running natively
+            arch = os.environ.get(
+                "CMAKE_OSX_ARCHITECTURES", platform.machine()
+            )
+            if sys.platform == "darwin" and arch == "arm64":
+                cmake_args.append("-DCMAKE_OSX_ARCHITECTURES=arm64")
 
             subprocess.check_call(
                 [CMAKE_EXE, "-GNinja", ] + cmake_args + [GDCM_SOURCE, ],
@@ -113,13 +123,19 @@ class CMakeBuildExt(build_ext):
             )
 
             if sys.platform.startswith("linux"):
-                shared_libs = [f for f in glob.glob(os.path.join(output_dir, "*")) if not f.endswith(".py")]
+                shared_libs = [
+                    f for f in glob.glob(os.path.join(output_dir, "*"))
+                    if not f.endswith(".py")
+                ]
                 for shared_lib in shared_libs:
                     subprocess.check_call(
                         ["patchelf", "--set-rpath", "$ORIGIN", shared_lib]
                     )
             elif sys.platform == 'darwin':
-                shared_libs = [f for f in glob.glob(os.path.join(output_dir, "*")) if not ( f.endswith(".py") or "dylib" in f)]
+                shared_libs = [
+                    f for f in glob.glob(os.path.join(output_dir, "*"))
+                    if not (f.endswith(".py") or "dylib" in f)
+                ]
                 for shared_lib in shared_libs:
                     subprocess.check_call(
                         ["install_name_tool", "-add_rpath", "@loader_path", shared_lib]

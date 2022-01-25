@@ -9,29 +9,110 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest, macOS-10.15]
-        python: [36, 37, 38, 39, 310]
-        bitness: [32, 64]
         include:
-          # Run 32 and 64 bit version in parallel for Linux and Windows
+          # Windows 32-bit
           - os: windows-latest
-            bitness: 64
+            python: 36
+            platform_id: win32
+          - os: windows-latest
+            python: 37
+            platform_id: win32
+          - os: windows-latest
+            python: 38
+            platform_id: win32
+          - os: windows-latest
+            python: 39
+            platform_id: win32
+          - os: windows-latest
+            python: 310
+            platform_id: win32
+
+          # Windows 64-bit
+          - os: windows-latest
+            python: 36
             platform_id: win_amd64
           - os: windows-latest
-            bitness: 32
-            platform_id: win32
+            python: 37
+            platform_id: win_amd64
+          - os: windows-latest
+            python: 38
+            platform_id: win_amd64
+          - os: windows-latest
+            python: 39
+            platform_id: win_amd64
+          - os: windows-latest
+            python: 310
+            platform_id: win_amd64
+
+          # Linux 32-bit
           - os: ubuntu-latest
-            bitness: 64
+            python: 36
+            platform_id: manylinux_i686
+          - os: ubuntu-latest
+            python: 37
+            platform_id: manylinux_i686
+          - os: ubuntu-latest
+            python: 38
+            platform_id: manylinux_i686
+          - os: ubuntu-latest
+            python: 39
+            platform_id: manylinux_i686
+          - os: ubuntu-latest
+            python: 310
+            platform_id: manylinux_i686
+
+          # Linux 64-bit
+          - os: ubuntu-latest
+            python: 36
             platform_id: manylinux_x86_64
           - os: ubuntu-latest
-            bitness: 32
-            platform_id: manylinux_i686
-          - os: macOS-10.15
-            bitness: 64
+            python: 37
+            platform_id: manylinux_x86_64
+          - os: ubuntu-latest
+            python: 38
+            platform_id: manylinux_x86_64
+          - os: ubuntu-latest
+            python: 39
+            platform_id: manylinux_x86_64
+          - os: ubuntu-latest
+            python: 310
+            platform_id: manylinux_x86_64
+
+          # macOS on Intel 64-bit
+          - os: macos-latest
+            python: 36
+            arch: x86_64
             platform_id: macosx_x86_64
-        exclude:
-          - os: macOS-10.15
-            bitness: 32
+          - os: macos-latest
+            python: 37
+            arch: x86_64
+            platform_id: macosx_x86_64
+          - os: macos-latest
+            python: 38
+            arch: x86_64
+            platform_id: macosx_x86_64
+          - os: macos-latest
+            python: 39
+            arch: x86_64
+            platform_id: macosx_x86_64
+          - os: macos-latest
+            python: 310
+            arch: x86_64
+            platform_id: macosx_x86_64
+
+          # macOS on Apple M1 64-bit
+          - os: macos-latest
+            python: 38
+            arch: arm64
+            platform_id: macosx_arm64
+          - os: macos-latest
+            python: 39
+            arch: arm64
+            platform_id: macosx_arm64
+          - os: macos-latest
+            python: 310
+            arch: arm64
+            platform_id: macosx_arm64
 
     steps:
       - uses: actions/checkout@v2
@@ -45,14 +126,14 @@ jobs:
 
         # Visual Studio
       - name: Set up MSVC x86
-        if: matrix.os == 'windows-latest' && matrix.bitness == '32'
+        if: matrix.os == 'windows-latest' && matrix.platform_id == 'win32'
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x86
 
         # Visual Studio
       - name: Set up MSVC x64
-        if: matrix.os == 'windows-latest' && matrix.bitness == '64'
+        if: matrix.os == 'windows-latest' && matrix.platform_id == 'win_amd64'
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Install cibuildwheel
@@ -85,10 +166,10 @@ jobs:
           CIBW_BEFORE_ALL_WINDOWS: |
             choco upgrade chocolatey -y
             choco install swig -f -y --no-progress
-            pip install ninja cmake
 
-          CIBW_BEFORE_ALL_MACOS: |
-            brew install swig ninja cmake
+          CIBW_ARCHS_MACOS: ${{ matrix.arch }}
+          CIBW_ENVIRONMENT_MACOS: CMAKE_OSX_ARCHITECTURES=${{ matrix.arch }}
+          CIBW_BEFORE_ALL_MACOS: brew install swig
 
         run: python -m cibuildwheel --output-dir wheelhouse
 
