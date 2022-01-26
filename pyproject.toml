@@ -1,0 +1,7 @@
+[build-system]
+requires = [
+    "setuptools",
+    "wheel",
+    "ninja >= 1.10.2.3",
+    "cmake >= 3.22.1",
+]

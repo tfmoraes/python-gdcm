@@ -1,36 +1,52 @@
+[![Python version](https://img.shields.io/pypi/pyversions/python-gdcm.svg)](https://img.shields.io/pypi/pyversions/python-gdcm.svg)
+[![PyPI version](https://badge.fury.io/py/python-gdcm.svg)](https://badge.fury.io/py/python-gdcm)
+
 # Python-GDCM
 
-**Unoficial** [GDCM](http://gdcm.sourceforge.net/wiki/index.php/Main_Page) packages for Python.
+**Unofficial** [GDCM](http://gdcm.sourceforge.net/wiki/index.php/Main_Page) packages for Python 3 on Linux, Windows and MacOS (both Intel and Apple Silicon).
 
-Grassroots DiCoM is a C++ library for DICOM medical files. It is automatically wrapped to python/C#/Java (using swig). It supports RAW,JPEG (lossy/lossless),J2K,JPEG-LS, RLE and deflated. It also comes with DICOM Part 3,6 & 7 of the standard as XML files.
+Grassroots DiCoM is a C++ library for [DICOM](https://www.dicomstandard.org/) medical files that can be wrapped for Python using [SWIG](http://www.swig.org/). It supports datasets encoded using native, JPEG, JPEG 2000, JPEG-LS, RLE and deflated transfer syntaxes. It also comes with Parts 3, 6 & 7 of the DICOM Standard as XML files.
 
 ## Installation
 
-### Using PIP
+### Using pip
 
-```
-pip install python-gdcm
+```bash
+pip install -U python-gdcm
 ```
 
 ### From source
 
-- Install building dependencies
-    - Compiler for you platform (GCC, Clang, MSVC)
-    - Cmake (https://cmake.org/) 
-    - Swig (http://www.swig.org/)
-- Build and install python-gdcm
-    - If cmake isn't in `$PATH` export the env variable `CMAKE_EXE` to its path
-        ```
-        $ export CMAKE_EXE=/CMAKE/PATH
-        ```
-    - If swig isn't in `$PATH` export the env variable `SWIG_EXE` to its path
-        ```
-        $ export SWIG_EXE=/SWIG/PATH
-        ```
-    - Build and install
-        ```                                                                
-        $ python setup.py install
-        ```
+#### Install dependencies
+- Compiler for you platform (GCC, Clang, MSVC)
+- [CMake](https://cmake.org/)
+- [SWIG](http://www.swig.org/)
+- [patchelf](https://github.com/NixOS/patchelf) will also be needed on Linux
+- [Git](https://git-scm.com/) to get the source code
+
+#### Setup environment
+If the `cmake` or `swig` executables aren't in `$PATH`, either add them or create  `CMAKE_EXE` and `SWIG_EXE` envars:
+```bash
+export CMAKE_EXE="path/to/cmake/executable"
+export SWIG_EXE="path/to/swig/executable"
+```
+
+#### Clone source
+```bash
+git clone --recurse-submodules https://github.com/tfmoraes/python-gdcm
+```
+
+#### Build and install
+```bash
+# Note the trailing slash!
+pip install python-gdcm/
+```
+
+#### Test installed package
+```bash
+python -c "import gdcm; print(gdcm.GDCM_VERSION)"
+```
+If you get a `ModuleNotFoundError: No module named '_gdcm.gdcmswig'` error then make sure your current working directory doesn't contain a `_gdcm` folder.
 
 ## Usage
 
