@@ -1,4 +1,3 @@
-
 import glob
 import os
 import platform
@@ -29,6 +28,7 @@ def get_libpython():
             return fpath
     return ""
 
+
 def get_libpython2():
     d = setuptools.Distribution()
     b = build_ext(d)
@@ -42,6 +42,7 @@ def get_libpython2():
 
     return ""
 
+
 def get_needed(shared_lib: str):
     output = subprocess.run(
         ["patchelf", "--print-needed", shared_lib], capture_output=True
@@ -53,7 +54,17 @@ def relocate(shared_lib: str, shared_libs_names: typing.List[str]):
     for needed in get_needed(shared_lib):
         needed = os.path.basename(needed)
         if needed in shared_libs_names:
-            print(subprocess.run(["patchelf", "--replace-needed", needed, f"$ORIGIN/{needed}", shared_lib,]))
+            print(
+                subprocess.run(
+                    [
+                        "patchelf",
+                        "--replace-needed",
+                        needed,
+                        f"$ORIGIN/{needed}",
+                        shared_lib,
+                    ]
+                )
+            )
 
 
 class ConfiguredCMakeExtension(setuptools.Extension):
@@ -79,18 +90,32 @@ class CMakeBuildExt(build_ext):
                 os.path.dirname(self.get_ext_fullpath(ext.name))
             )
 
+            xml_folder = os.path.join(output_dir, "XML")
+            os.mkdir(xml_folder)
+            data_dict_folder = "gdcm_src/Source/DataDictionary/"
+            info_obj_def_folder = "gdcm_src/Source/InformationObjectDefinition"
+            for xml_file in glob.glob(os.path.join(data_dict_folder, "*.xml")):
+                shutil.copy(xml_file, xml_folder)
+            for xml_file in glob.glob(os.path.join(info_obj_def_folder, "*.xml")):
+                shutil.copy(xml_file, xml_folder)
+
             my_env = os.environ.copy()
-            if sys.platform == 'darwin':
+            if sys.platform == "darwin":
                 try:
                     my_env["LDFLAGS"] += "-undefined dynamic_lookup"
                 except KeyError:
                     my_env["LDFLAGS"] = "-undefined dynamic_lookup"
 
+            if sys.platform == "win32":
+                is_shared = "OFF"
+            else:
+                is_shared = "ON"
+
             cmake_args = [
                 "-DCMAKE_BUILD_TYPE:STRING=Release",
                 "-DGDCM_BUILD_APPLICATIONS:BOOL=ON",
                 "-DGDCM_DOCUMENTATION:BOOL=OFF",
-                "-DGDCM_BUILD_SHARED_LIBS:BOOL=ON",
+                f"-DGDCM_BUILD_SHARED_LIBS:BOOL={is_shared}",
                 "-DGDCM_WRAP_PYTHON:BOOL=ON",
                 "-DGDCM_NO_PYTHON_LIBS_LINKING:BOOL=ON",
                 "-DGDCM_BUILD_DOCBOOK_MANPAGES:BOOL=OFF",
@@ -104,37 +129,55 @@ class CMakeBuildExt(build_ext):
 
             # platform.machine() may not return 'arm64' for Apple M1 on older
             # Python versions, or if not running natively
-            arch = os.environ.get(
-                "CMAKE_OSX_ARCHITECTURES", platform.machine()
-            )
+            arch = os.environ.get("CMAKE_OSX_ARCHITECTURES", platform.machine())
             if sys.platform == "darwin" and arch == "arm64":
                 cmake_args.append("-DCMAKE_OSX_ARCHITECTURES=arm64")
 
+            # Based on opencv-python
+            if "CMAKE_ARGS" in os.environ:
+                import shlex
+
+                cmake_args.extend(shlex.split(os.environ["CMAKE_ARGS"]))
+                del shlex
+
             subprocess.check_call(
-                [CMAKE_EXE, "-GNinja", ] + cmake_args + [GDCM_SOURCE, ],
+                [
+                    CMAKE_EXE,
+                    "-GNinja",
+                ]
+                + cmake_args
+                + [
+                    GDCM_SOURCE,
+                ],
                 env=my_env,
                 cwd=BUILD_DIR,
             )
 
             subprocess.check_call(
-                [CMAKE_EXE, "--build", BUILD_DIR, ],
+                [
+                    CMAKE_EXE,
+                    "--build",
+                    BUILD_DIR,
+                ],
                 env=my_env,
-                cwd=BUILD_DIR
+                cwd=BUILD_DIR,
             )
 
             if sys.platform.startswith("linux"):
                 shared_libs = [
-                    f for f in glob.glob(os.path.join(output_dir, "*"))
-                    if not f.endswith(".py")
+                    f
+                    for f in glob.glob(os.path.join(output_dir, "*"))
+                    if not (f.endswith(".py") or os.path.isdir(f))
                 ]
                 for shared_lib in shared_libs:
                     subprocess.check_call(
                         ["patchelf", "--set-rpath", "$ORIGIN", shared_lib]
                     )
-            elif sys.platform == 'darwin':
+            elif sys.platform == "darwin":
                 shared_libs = [
-                    f for f in glob.glob(os.path.join(output_dir, "*"))
-                    if not (f.endswith(".py") or "dylib" in f)
+                    f
+                    for f in glob.glob(os.path.join(output_dir, "*"))
+                    if not (f.endswith(".py") or "dylib" in f or os.path.isdir(f))
                 ]
                 for shared_lib in shared_libs:
                     subprocess.check_call(
@@ -147,7 +190,7 @@ class CMakeBuildExt(build_ext):
 
 setuptools.setup(
     name="python-gdcm",
-    version="3.0.10",
+    version="3.0.10.2",
     author="Thiago Franco de Moraes",
     author_email="totonixsame@gmail.com",
     description="Grassroots DICOM runtime libraries",
@@ -197,9 +240,10 @@ setuptools.setup(
             "gdcmscu",
             "gdcmtar",
             "gdcmxml",
+            "XML/*.xml"
         ],
     },
-    scripts = [
+    scripts=[
         "scripts/gdcmanon",
         "scripts/gdcmconv",
         "scripts/gdcmdiff",

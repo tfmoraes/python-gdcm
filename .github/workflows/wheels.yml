@@ -136,6 +136,71 @@ jobs:
         if: matrix.platform_id == 'win_amd64'
         uses: ilammy/msvc-dev-cmd@v1
 
+      - name: Installing Nasm win_amd64
+        if: matrix.platform_id == 'win_amd64'
+        run: |
+          choco install --no-progress -y nasm
+
+      - name: Installing Nasm win32
+        if: matrix.platform_id == 'win32'
+        run: |
+          choco install --no-progress -y --x86 nasm
+
+      - name: Set Path win32
+        if: matrix.platform_id == 'win32'
+        shell: bash
+        run: |
+          echo "C:\Program Files (x86)\NASM" >> $GITHUB_PATH
+
+      - name: Set Path win_amd64
+        if: matrix.platform_id == 'win_amd64'
+        shell: bash
+        run: |
+          echo "C:\Program Files\NASM" >> $GITHUB_PATH
+
+      - name: Compile Openssl win_amd64
+        if: matrix.platform_id == 'win_amd64'
+        run: |
+          pushd c:/
+          git clone https://github.com/openssl/openssl.git
+          pushd openssl
+          git checkout OpenSSL_1_1_1-stable
+          perl Configure no-shared no-tests VC-WIN64A
+          nmake
+          mkdir lib\VC
+          copy libcrypto.lib lib\VC\libeay32.lib
+          copy libssl.lib lib\VC\ssleay32.lib
+          popd
+          popd
+
+      - name: Compile Openssl win32
+        if: matrix.platform_id == 'win32'
+        run: |
+          pushd c:\
+          git clone https://github.com/openssl/openssl.git
+          pushd openssl
+          git checkout OpenSSL_1_1_1-stable
+          perl Configure no-shared no-tests VC-WIN32
+          nmake
+          mkdir lib\VC
+          copy libcrypto.lib lib\VC\libeay32.lib
+          copy libssl.lib lib\VC\ssleay32.lib
+          popd
+          popd
+
+      - name: Compile Openssl Mac
+        if: matrix.os == 'macos-latest'
+        run: |
+          pushd /tmp
+          git clone https://github.com/openssl/openssl.git
+          pushd openssl
+          git checkout OpenSSL_1_1_1-stable
+          ./Configure --prefix=/usr/local/openssl no-tests darwin64-${{ matrix.arch }}-cc
+          make
+          sudo make install
+          popd
+          popd
+
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.3.1
 
@@ -150,7 +215,7 @@ jobs:
           CIBW_PRERELEASE_PYTHONS: True
 
           CIBW_BEFORE_ALL_LINUX: |
-            yum install -y gcc-c++ pcre-devel
+            yum install -y gcc-c++ pcre-devel openssl-devel
             /opt/python/cp38-cp38/bin/python -m pip install ninja
             ln -s /opt/python/cp38-cp38/bin/ninja /usr/bin/ninja
             if [[ ! -e $(command -v swig) ]]; then
@@ -162,14 +227,22 @@ jobs:
               make -j2 && make install > /dev/null
               popd
             fi
+          CIBW_ENVIRONMENT_LINUX: CMAKE_ARGS="-DGDCM_USE_SYSTEM_OPENSSL:BOOL=ON"
 
           CIBW_BEFORE_ALL_WINDOWS: |
             choco upgrade chocolatey -y
             choco install swig -f -y --no-progress
 
+          CIBW_ENVIRONMENT_WINDOWS: >
+            CMAKE_ARGS="-DGDCM_USE_SYSTEM_OPENSSL:BOOL=ON -DOPENSSL_ROOT_DIR=c:/openssl"
+
           CIBW_ARCHS_MACOS: ${{ matrix.arch }}
-          CIBW_ENVIRONMENT_MACOS: CMAKE_OSX_ARCHITECTURES=${{ matrix.arch }}
-          CIBW_BEFORE_ALL_MACOS: brew install swig
+          CIBW_BEFORE_ALL_MACOS: |
+            brew install swig
+
+          CIBW_ENVIRONMENT_MACOS: >
+            CMAKE_OSX_ARCHITECTURES=${{ matrix.arch }}
+            CMAKE_ARGS="-DGDCM_USE_SYSTEM_OPENSSL:BOOL=ON -DOPENSSL_ROOT_DIR=/usr/local/openssl -DOPENSSL_CRYPTO_LIBRARIES=/usr/local/openssl/lib/libcrypto.dylib -DOPENSSL_SSL_LIBRARIES=/usr/local/openssl/lib/libssl.dylib"
 
         run: python -m cibuildwheel --output-dir wheelhouse
 

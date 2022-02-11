@@ -73,6 +73,10 @@ if main_is_frozen():
 else:
   Global.GetInstance().Prepend( os.path.dirname(__file__) + "/../../../"  + GDCM_INSTALL_DATA_DIR + "/XML/" )
 
+
+if "GDCM_RESOURCES_PATH" not in os.environ:
+    os.environ["GDCM_RESOURCES_PATH"] = os.path.join(os.path.dirname(__file__), "_gdcm/XML")
+
 # Do it afterward so that it comes in first in the list
 try:
   Global.GetInstance().Prepend( os.environ["GDCM_RESOURCES_PATH"] )
