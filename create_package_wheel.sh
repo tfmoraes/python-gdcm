@@ -8,7 +8,7 @@ readonly swig_ver="4.0.2"
 
 mkdir -p "$gdcmout"
 
-# yum install -y gcc-c++ ninja-build pcre-devel openssl-devel
+yum install -y gcc-c++ ninja-build pcre-devel openssl-devel
 
 # # Download and install cmake
 # cd /tmp
