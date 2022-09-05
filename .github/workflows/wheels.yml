@@ -238,7 +238,8 @@ jobs:
 
           CIBW_ARCHS_MACOS: ${{ matrix.arch }}
           CIBW_BEFORE_ALL_MACOS: |
-            brew install swig
+            brew install swig libiconv
+            brew link --force libiconv
 
           CIBW_ENVIRONMENT_MACOS: >
             CMAKE_OSX_ARCHITECTURES=${{ matrix.arch }}
