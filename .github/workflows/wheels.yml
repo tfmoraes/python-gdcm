@@ -244,8 +244,8 @@ jobs:
           CIBW_ENVIRONMENT_MACOS: >
             CMAKE_OSX_ARCHITECTURES=${{ matrix.arch }}
             CMAKE_ARGS="-DGDCM_USE_SYSTEM_OPENSSL:BOOL=ON -DOPENSSL_ROOT_DIR=/usr/local/openssl -DOPENSSL_CRYPTO_LIBRARIES=/usr/local/openssl/lib/libcrypto.dylib -DOPENSSL_SSL_LIBRARIES=/usr/local/openssl/lib/libssl.dylib"
-            LDFLAGS="-L/usr/local/opt/libiconv/lib"
-            CPPFLAGS="-I/usr/local/opt/libiconv/include"
+            LDFLAGS="-L/usr/local/opt/libiconv/lib "
+            CPPFLAGS="-I/usr/local/opt/libiconv/include "
             PATH="/usr/local/opt/libiconv/bin:$PATH"
 
           CIBW_TEST_COMMAND: python -c "import gdcm"
