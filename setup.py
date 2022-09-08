@@ -102,9 +102,9 @@ class CMakeBuildExt(build_ext):
             my_env = os.environ.copy()
             if sys.platform == "darwin":
                 try:
-                    my_env["LDFLAGS"] += "-undefined dynamic_lookup"
+                    my_env["LDFLAGS"] += "-undefined dynamic_lookup -liconv"
                 except KeyError:
-                    my_env["LDFLAGS"] = "-undefined dynamic_lookup"
+                    my_env["LDFLAGS"] = "-undefined dynamic_lookup -liconv"
 
             if sys.platform == "win32":
                 is_shared = "OFF"
@@ -112,6 +112,7 @@ class CMakeBuildExt(build_ext):
                 is_shared = "ON"
 
             cmake_args = [
+                "-DCMAKE_CXX_STANDARD=11",
                 "-DCMAKE_BUILD_TYPE:STRING=Release",
                 "-DGDCM_BUILD_APPLICATIONS:BOOL=ON",
                 "-DGDCM_DOCUMENTATION:BOOL=OFF",
@@ -190,7 +191,7 @@ class CMakeBuildExt(build_ext):
 
 setuptools.setup(
     name="python-gdcm",
-    version="3.0.17",
+    version="3.0.17.1",
     author="Thiago Franco de Moraes",
     author_email="totonixsame@gmail.com",
     description="Grassroots DICOM runtime libraries",
