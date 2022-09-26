@@ -124,7 +124,6 @@ class CMakeBuildExt(build_ext):
                 f"-DPYTHON_INCLUDE_DIR={sysconfig.get_paths()['platinclude']}",
                 f"-DPYTHON_LIBRARY={libpython}",
                 f"-DSWIG_EXECUTABLE={SWIG_EXE}",
-                "-DGDCM_USE_SYSTEM_ZLIB=ON",
                 f"-DEXECUTABLE_OUTPUT_PATH={output_dir}",
                 f"-DLIBRARY_OUTPUT_PATH={output_dir}",
             ]
@@ -192,7 +191,7 @@ class CMakeBuildExt(build_ext):
 
 setuptools.setup(
     name="python-gdcm",
-    version="3.0.18",
+    version="3.0.19",
     author="Thiago Franco de Moraes",
     author_email="totonixsame@gmail.com",
     description="Grassroots DICOM runtime libraries",
