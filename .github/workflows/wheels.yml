@@ -14,41 +14,53 @@ jobs:
           - os: windows-latest
             python: 36
             platform_id: win32
+            arch: x86
           - os: windows-latest
             python: 37
             platform_id: win32
+            arch: x86
           - os: windows-latest
             python: 38
             platform_id: win32
+            arch: x86
           - os: windows-latest
             python: 39
             platform_id: win32
+            arch: x86
           - os: windows-latest
             python: 310
             platform_id: win32
+            arch: x86
           - os: windows-latest
             python: 311
             platform_id: win32
+            arch: x86
 
           # Windows 64-bit
           - os: windows-latest
             python: 36
             platform_id: win_amd64
+            arch: x64
           - os: windows-latest
             python: 37
             platform_id: win_amd64
+            arch: x64
           - os: windows-latest
             python: 38
             platform_id: win_amd64
+            arch: x64
           - os: windows-latest
             python: 39
             platform_id: win_amd64
+            arch: x64
           - os: windows-latest
             python: 310
             platform_id: win_amd64
+            arch: x64
           - os: windows-latest
             python: 311
             platform_id: win_amd64
+            arch: x64
 
           # Linux 32-bit
           - os: ubuntu-latest
@@ -252,6 +264,7 @@ jobs:
           CIBW_BEFORE_ALL_WINDOWS: |
             choco upgrade chocolatey -y
             choco install swig -f -y --no-progress
+            call vcvarsall.bat ${{ matrix.arch }}
 
           CIBW_ENVIRONMENT_WINDOWS: >
             CMAKE_ARGS="-DGDCM_USE_SYSTEM_OPENSSL:BOOL=ON -DOPENSSL_ROOT_DIR=c:/openssl"
