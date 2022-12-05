@@ -15,64 +15,64 @@ jobs:
             python: 36
             platform_id: win32
             arch: x86
-            vs_version: 14
+            vs_version: 14.XX
           - os: windows-latest
             python: 37
             platform_id: win32
             arch: x86
-            vs_version: 16
+            vs_version: 16.XX
           - os: windows-latest
             python: 38
             platform_id: win32
             arch: x86
-            vs_version: 16
+            vs_version: 16.XX
           - os: windows-latest
             python: 39
             platform_id: win32
             arch: x86
-            vs_version: 17
+            vs_version: 17.XX
           - os: windows-latest
             python: 310
             platform_id: win32
             arch: x86
-            vs_version: 17
+            vs_version: 17.XX
           - os: windows-latest
             python: 311
             platform_id: win32
             arch: x86
-            vs_version: 17
+            vs_version: 17.XX
 
           # Windows 64-bit
           - os: windows-latest
             python: 36
             platform_id: win_amd64
             arch: x64
-            vs_version: 14
+            vs_version: 14.XX
           - os: windows-latest
             python: 37
             platform_id: win_amd64
             arch: x64
-            vs_version: 16
+            vs_version: 16.XX
           - os: windows-latest
             python: 38
             platform_id: win_amd64
             arch: x64
-            vs_version: 16
+            vs_version: 16.XX
           - os: windows-latest
             python: 39
             platform_id: win_amd64
             arch: x64
-            vs_version: 17
+            vs_version: 17.XX
           - os: windows-latest
             python: 310
             platform_id: win_amd64
             arch: x64
-            vs_version: 17
+            vs_version: 17.XX
           - os: windows-latest
             python: 311
             platform_id: win_amd64
             arch: x64
-            vs_version: 17
+            vs_version: 17.XX
 
           # Linux 32-bit
           - os: ubuntu-latest
