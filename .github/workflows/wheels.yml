@@ -174,14 +174,14 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x86
-          toolset: ${{vs_version}}
+          toolset: ${{ matrix.vs_version }}
 
         # Visual Studio
       - name: Set up MSVC x64
         if: matrix.platform_id == 'win_amd64'
         uses: ilammy/msvc-dev-cmd@v1
         with:
-          toolset: ${{vs_version}}
+          toolset: ${{ matrix.vs_version }}
 
       - name: Installing Nasm win_amd64
         if: matrix.platform_id == 'win_amd64'
