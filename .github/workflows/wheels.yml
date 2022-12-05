@@ -172,15 +172,16 @@ jobs:
       - name: Set up MSVC x86
         if: matrix.platform_id == 'win32'
         uses: ilammy/msvc-dev-cmd@v1
-        toolset: ${{vs_version}}
         with:
           arch: x86
+          toolset: ${{vs_version}}
 
         # Visual Studio
       - name: Set up MSVC x64
         if: matrix.platform_id == 'win_amd64'
         uses: ilammy/msvc-dev-cmd@v1
-        toolset: ${{vs_version}}
+        with:
+          toolset: ${{vs_version}}
 
       - name: Installing Nasm win_amd64
         if: matrix.platform_id == 'win_amd64'
