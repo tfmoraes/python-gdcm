@@ -15,52 +15,64 @@ jobs:
             python: 36
             platform_id: win32
             arch: x86
+            vs_version: 14
           - os: windows-latest
             python: 37
             platform_id: win32
             arch: x86
+            vs_version: 16
           - os: windows-latest
             python: 38
             platform_id: win32
             arch: x86
+            vs_version: 16
           - os: windows-latest
             python: 39
             platform_id: win32
             arch: x86
+            vs_version: 17
           - os: windows-latest
             python: 310
             platform_id: win32
             arch: x86
+            vs_version: 17
           - os: windows-latest
             python: 311
             platform_id: win32
             arch: x86
+            vs_version: 17
 
           # Windows 64-bit
           - os: windows-latest
             python: 36
             platform_id: win_amd64
             arch: x64
+            vs_version: 14
           - os: windows-latest
             python: 37
             platform_id: win_amd64
             arch: x64
+            vs_version: 16
           - os: windows-latest
             python: 38
             platform_id: win_amd64
             arch: x64
+            vs_version: 16
           - os: windows-latest
             python: 39
             platform_id: win_amd64
             arch: x64
+            vs_version: 17
           - os: windows-latest
             python: 310
             platform_id: win_amd64
             arch: x64
+            vs_version: 17
           - os: windows-latest
             python: 311
             platform_id: win_amd64
             arch: x64
+            vs_version: 17
 
           # Linux 32-bit
           - os: ubuntu-latest
@@ -160,6 +172,7 @@ jobs:
       - name: Set up MSVC x86
         if: matrix.platform_id == 'win32'
         uses: ilammy/msvc-dev-cmd@v1
+        toolset: ${{vs_version}}
         with:
           arch: x86
 
@@ -167,6 +180,7 @@ jobs:
       - name: Set up MSVC x64
         if: matrix.platform_id == 'win_amd64'
         uses: ilammy/msvc-dev-cmd@v1
+        toolset: ${{vs_version}}
 
       - name: Installing Nasm win_amd64
         if: matrix.platform_id == 'win_amd64'
