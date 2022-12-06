@@ -15,7 +15,7 @@ jobs:
             python: 36
             platform_id: win32
             arch: x86
-            vs_version: 14.11
+            vs_version: 14.0
           - os: windows-latest
             python: 37
             platform_id: win32
@@ -47,7 +47,7 @@ jobs:
             python: 36
             platform_id: win_amd64
             arch: x64
-            vs_version: 14.11
+            vs_version: 14.0
           - os: windows-latest
             python: 37
             platform_id: win_amd64
