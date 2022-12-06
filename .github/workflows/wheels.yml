@@ -11,64 +11,64 @@ jobs:
       matrix:
         include:
           # Windows 32-bit
-          - os: windows-latest
+          - os: windows-2019
             python: 36
             platform_id: win32
             arch: x86
             vs_version: 14.0
-          - os: windows-latest
+          - os: windows-2019
             python: 37
             platform_id: win32
             arch: x86
             vs_version: 16.0
-          - os: windows-latest
+          - os: windows-2019
             python: 38
             platform_id: win32
             arch: x86
             vs_version: 16.0
-          - os: windows-latest
+          - os: windows-2019
             python: 39
             platform_id: win32
             arch: x86
             vs_version: 17.0
-          - os: windows-latest
+          - os: windows-2019
             python: 310
             platform_id: win32
             arch: x86
             vs_version: 17.0
-          - os: windows-latest
+          - os: windows-2019
             python: 311
             platform_id: win32
             arch: x86
             vs_version: 17.0
 
           # Windows 64-bit
-          - os: windows-latest
+          - os: windows-2019
             python: 36
             platform_id: win_amd64
             arch: x64
             vs_version: 14.0
-          - os: windows-latest
+          - os: windows-2019
             python: 37
             platform_id: win_amd64
             arch: x64
             vs_version: 16.0
-          - os: windows-latest
+          - os: windows-2019
             python: 38
             platform_id: win_amd64
             arch: x64
             vs_version: 16.0
-          - os: windows-latest
+          - os: windows-2019
             python: 39
             platform_id: win_amd64
             arch: x64
             vs_version: 17.0
-          - os: windows-latest
+          - os: windows-2019
             python: 310
             platform_id: win_amd64
             arch: x64
             vs_version: 17.0
-          - os: windows-latest
+          - os: windows-2019
             python: 311
             platform_id: win_amd64
             arch: x64
