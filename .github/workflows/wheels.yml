@@ -90,6 +90,26 @@ jobs:
             python: 311
             platform_id: manylinux_x86_64
 
+          # Linux aarch64
+          - os: ubuntu-latest
+            python: 36
+            platform_id: manylinux_aarch64
+          - os: ubuntu-latest
+            python: 37
+            platform_id: manylinux_aarch64
+          - os: ubuntu-latest
+            python: 38
+            platform_id: manylinux_aarch64
+          - os: ubuntu-latest
+            python: 39
+            platform_id: manylinux_aarch64
+          - os: ubuntu-latest
+            python: 310
+            platform_id: manylinux_aarch64
+          - os: ubuntu-latest
+            python: 311
+            platform_id: manylinux_aarch64
+
           # macOS on Intel 64-bit
           - os: macos-latest
             python: 36
@@ -235,6 +255,7 @@ jobs:
         env:
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
           CIBW_MANYLINUX_I686_IMAGE: manylinux2014
+          CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
           CIBW_ARCHS_LINUX: auto aarch64
 
