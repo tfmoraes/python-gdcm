@@ -191,7 +191,7 @@ class CMakeBuildExt(build_ext):
 
 setuptools.setup(
     name="python-gdcm",
-    version="3.0.21",
+    version="3.0.22",
     author="Thiago Franco de Moraes",
     author_email="totonixsame@gmail.com",
     description="Grassroots DICOM runtime libraries",
