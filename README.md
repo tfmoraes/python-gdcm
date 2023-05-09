@@ -1,5 +1,6 @@
 [![Python version](https://img.shields.io/pypi/pyversions/python-gdcm.svg)](https://img.shields.io/pypi/pyversions/python-gdcm.svg)
 [![PyPI version](https://badge.fury.io/py/python-gdcm.svg)](https://badge.fury.io/py/python-gdcm)
+[![Downloads](https://static.pepy.tech/badge/python-gdcm)](https://pepy.tech/project/python-gdcm)
 
 # Python-GDCM
 
