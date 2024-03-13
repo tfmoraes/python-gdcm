@@ -233,7 +233,7 @@ jobs:
           pushd c:/
           git clone https://github.com/openssl/openssl.git
           pushd openssl
-          git checkout OpenSSL_1_1_1-stable
+          git checkout openssl-3.2.1
           perl Configure no-shared no-tests VC-WIN64A
           nmake
           mkdir lib\VC
@@ -248,7 +248,7 @@ jobs:
           pushd c:\
           git clone https://github.com/openssl/openssl.git
           pushd openssl
-          git checkout OpenSSL_1_1_1-stable
+          git checkout openssl-3.2.1
           perl Configure no-shared no-tests VC-WIN32
           nmake
           mkdir lib\VC
@@ -263,7 +263,7 @@ jobs:
           pushd /tmp
           git clone https://github.com/openssl/openssl.git
           pushd openssl
-          git checkout OpenSSL_1_1_1-stable
+          git checkout openssl-3.2.1
           ./Configure --prefix=/usr/local/openssl no-tests darwin64-${{ matrix.arch }}-cc
           make
           sudo make install
