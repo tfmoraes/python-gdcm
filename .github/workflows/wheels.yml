@@ -338,8 +338,6 @@ jobs:
 
       - name: Create sdist
         run: |
-          python -m pip install --upgrade pip
-          pip install setuptool
           python setup.py sdist
 
       - uses: actions/upload-artifact@v4
