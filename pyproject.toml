@@ -1,10 +1,11 @@
 [build-system]
-build-backend = "setuptools.build_meta"
+build-backend = "hatchling.build"
 requires = [
-    "setuptools >= 61.0",
+    "hatchling",
     "wheel",
     "ninja >= 1.10.2.3",
     "cmake >= 3.22.1",
+    "scikit-build-core~=0.9.0",
 ]
 
 [project]
@@ -58,6 +59,58 @@ gdcmxml = "_gdcm.scripts.gdcmxml:main"
 [project.urls]
 Homepage="https://github.com/tfmoraes/python-gdcm/"
 issues="https://github.com/tfmoraes/python-gdcm/issues"
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "gdcm.py",
+  "_gdcm/*",
+  "gdcm_src/*"
+]
+exclude = [
+  "gdcm_src/.*",
+  "gdcm_src/Testing",
+  ".gitignore"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["_gdcm", "gdcm.py"]
+artifacts = [
+    "gdcm.py",
+    "*.py",
+    "*.so.*",
+    "_gdcm*.so",
+    # Linux modules.
+    "*-linux-gnu.so",
+    # Unix shared libraries.
+    "lib*.so*",
+    # macOS modules.
+    "*-darwin.so",
+    # macOS shared libraries.
+    "lib*.dylib*",
+    # Windows modules.
+    "*.pyd",
+    # Windows shared libraries.
+    "*.dll",
+    # GDCM applications
+    "*.exe",
+    "gdcmanon",
+    "gdcmconv",
+    "gdcmdiff",
+    "gdcmdump",
+    "gdcmgendir",
+    "gdcmimg",
+    "gdcminfo",
+    "gdcmpap3",
+    "gdcmraw",
+    "gdcmscanner",
+    "gdcmscu",
+    "gdcmtar",
+    "gdcmxml",
+    "XML/*.xml",
+]
+
+[tool.hatch.build.targets.wheel.hooks.scikit-build]
+experimental = true
 
 [tool.setuptools]
 py-modules=[ "gdcm", ]
