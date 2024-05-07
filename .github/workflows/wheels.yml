@@ -285,6 +285,8 @@ jobs:
           # Include latest Python beta
           CIBW_PRERELEASE_PYTHONS: True
 
+          CIBW_BUILD_FRONTEND: build
+
           CIBW_BEFORE_ALL_LINUX: |
             yum install -y gcc-c++ pcre-devel openssl-devel
             /opt/python/cp38-cp38/bin/python -m pip install ninja
