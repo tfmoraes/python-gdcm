@@ -19,6 +19,7 @@ BUILD_DIR = tempfile.mkdtemp()
 GDCM_SOURCE = os.path.join(CURRENT_DIR, "gdcm_src")
 GDCM_MODULE = os.path.join(CURRENT_DIR, "_gdcm")
 
+
 # See https://stackoverflow.com/a/50357801/115612
 def get_libpython():
     v = sysconfig.get_config_vars()
@@ -191,106 +192,11 @@ class CMakeBuildExt(build_ext):
 
 
 setuptools.setup(
-    name="python-gdcm",
-    version="3.0.24.1",
-    author="Thiago Franco de Moraes",
-    author_email="totonixsame@gmail.com",
-    description="Grassroots DICOM runtime libraries",
-    long_description=open("README.md", encoding="utf-8").read(),
-    long_description_content_type="text/markdown",
-    url="https://github.com/tfmoraes/python-gdcm/",
-    license="BSD",
-    py_modules=[
-        "gdcm",
-    ],
-    packages=[
-        "_gdcm",
-    ],
     ext_package="_gdcm",
     ext_modules=[
         ConfiguredCMakeExtension("_gdcm", target="_gdcm"),
     ],
-    package_data={
-        "_gdcm": [
-            "*.py",
-            "*.so.*",
-            "_gdcm*.so",
-            # Linux modules.
-            "*-linux-gnu.so",
-            # Unix shared libraries.
-            "lib*.so*",
-            # macOS modules.
-            "*-darwin.so",
-            # macOS shared libraries.
-            "lib*.dylib*",
-            # Windows modules.
-            "*.pyd",
-            # Windows shared libraries.
-            "*.dll",
-            # GDCM applications
-            "*.exe",
-            "gdcmanon",
-            "gdcmconv",
-            "gdcmdiff",
-            "gdcmdump",
-            "gdcmgendir",
-            "gdcmimg",
-            "gdcminfo",
-            "gdcmpap3",
-            "gdcmraw",
-            "gdcmscanner",
-            "gdcmscu",
-            "gdcmtar",
-            "gdcmxml",
-            "XML/*.xml"
-        ],
-    },
-    scripts=[
-        "scripts/gdcmanon",
-        "scripts/gdcmconv",
-        "scripts/gdcmdiff",
-        "scripts/gdcmdump",
-        "scripts/gdcmgendir",
-        "scripts/gdcmimg",
-        "scripts/gdcminfo",
-        "scripts/gdcmpap3",
-        "scripts/gdcmraw",
-        "scripts/gdcmscanner",
-        "scripts/gdcmscu",
-        "scripts/gdcmtar",
-        "scripts/gdcmxml",
-    ],
     cmdclass={
         "build_ext": CMakeBuildExt,
     },
-    # data_files =[(site_packages_path, ['gdcm.pth',])],
-    include_package_data=True,
-    #  distclass=BinaryDistribution,
-    zip_safe=False,
-    python_requires=">=3.6",
-    platforms=["Windows", "Linux", "Solaris", "Mac OS-X", "Unix"],
-    classifiers=[
-        "Development Status :: 5 - Production/Stable",
-        "Environment :: Console",
-        "Intended Audience :: Developers",
-        "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: Apache Software License",
-        "Programming Language :: C",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12",
-        "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: Implementation :: CPython",
-        "Topic :: Scientific/Engineering",
-        "Operating System :: Microsoft :: Windows",
-        "Operating System :: POSIX",
-        "Operating System :: Unix",
-        "Operating System :: MacOS",
-    ],
 )

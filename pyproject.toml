@@ -1,7 +1,87 @@
 [build-system]
+build-backend = "setuptools.build_meta"
 requires = [
-    "setuptools",
+    "setuptools >= 61.0",
     "wheel",
     "ninja >= 1.10.2.3",
     "cmake >= 3.22.1",
+]
+
+[project]
+name = "python-gdcm"
+version = "3.0.24.1"
+authors = [
+{name = "Thiago Franco de Moraes", email="totonixsame@gmail.com"},
+]
+description="Grassroots DICOM runtime libraries"
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers=[
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: C",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Scientific/Engineering",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Operating System :: MacOS",
+]
+
+[project.urls]
+Homepage="https://github.com/tfmoraes/python-gdcm/"
+issues="https://github.com/tfmoraes/python-gdcm/issues"
+
+[tool.setuptools]
+py-modules=[ "gdcm", ]
+packages=[ "_gdcm", ]
+platforms=["Windows", "Linux", "Solaris", "Mac OS-X", "Unix"]
+include-package-data = true
+
+[too.setuptools.package-data]
+_gdcm = [
+    "*.py",
+    "*.so.*",
+    "_gdcm*.so",
+    # Linux modules.
+    "*-linux-gnu.so",
+    # Unix shared libraries.
+    "lib*.so*",
+    # macOS modules.
+    "*-darwin.so",
+    # macOS shared libraries.
+    "lib*.dylib*",
+    # Windows modules.
+    "*.pyd",
+    # Windows shared libraries.
+    "*.dll",
+    # GDCM applications
+    "*.exe",
+    "gdcmanon",
+    "gdcmconv",
+    "gdcmdiff",
+    "gdcmdump",
+    "gdcmgendir",
+    "gdcmimg",
+    "gdcminfo",
+    "gdcmpap3",
+    "gdcmraw",
+    "gdcmscanner",
+    "gdcmscu",
+    "gdcmtar",
+    "gdcmxml",
+    "XML/*.xml",
 ]
