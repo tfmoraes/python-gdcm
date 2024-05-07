@@ -41,13 +41,28 @@ classifiers=[
     "Operating System :: MacOS",
 ]
 
+[project.scripts]
+gdcmanon = "_gdcm.scripts.gdcmanon"
+gdcmconv = "_gdcm.scripts.gdcmconv"
+gdcmdiff = "_gdcm.scripts.gdcmdiff"
+gdcmdump = "_gdcm.scripts.gdcmdump"
+gdcmgendir = "_gdcm.scripts.gdcmgendir"
+gdcmimg = "_gdcm.scripts.gdcmimg"
+gdcminfo = "_gdcm.scripts.gdcminfo"
+gdcmpap3 = "_gdcm.scripts.gdcmpap3"
+gdcmraw = "_gdcm.scripts.gdcmraw"
+gdcmscanner = "_gdcm.scripts.gdcmscanner"
+gdcmscu = "_gdcm.scripts.gdcmscu"
+gdcmtar = "_gdcm.scripts.gdcmtar"
+gdcmxml = "_gdcm.scripts.gdcmxml"
+
 [project.urls]
 Homepage="https://github.com/tfmoraes/python-gdcm/"
 issues="https://github.com/tfmoraes/python-gdcm/issues"
 
 [tool.setuptools]
 py-modules=[ "gdcm", ]
-packages=[ "_gdcm", ]
+packages=[ "_gdcm", "_gdcm.scripts" ]
 platforms=["Windows", "Linux", "Solaris", "Mac OS-X", "Unix"]
 include-package-data = true
 
