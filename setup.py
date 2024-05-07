@@ -192,6 +192,7 @@ class CMakeBuildExt(build_ext):
 
 
 setuptools.setup(
+    ext_package="_gdcm",
     ext_modules=[
         ConfiguredCMakeExtension("_gdcm", target="_gdcm"),
     ],

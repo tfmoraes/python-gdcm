@@ -42,19 +42,19 @@ classifiers=[
 ]
 
 [project.scripts]
-gdcmanon = "_gdcm.scripts.gdcmanon"
-gdcmconv = "_gdcm.scripts.gdcmconv"
-gdcmdiff = "_gdcm.scripts.gdcmdiff"
-gdcmdump = "_gdcm.scripts.gdcmdump"
-gdcmgendir = "_gdcm.scripts.gdcmgendir"
-gdcmimg = "_gdcm.scripts.gdcmimg"
-gdcminfo = "_gdcm.scripts.gdcminfo"
-gdcmpap3 = "_gdcm.scripts.gdcmpap3"
-gdcmraw = "_gdcm.scripts.gdcmraw"
-gdcmscanner = "_gdcm.scripts.gdcmscanner"
-gdcmscu = "_gdcm.scripts.gdcmscu"
-gdcmtar = "_gdcm.scripts.gdcmtar"
-gdcmxml = "_gdcm.scripts.gdcmxml"
+gdcmanon = "_gdcm.scripts.gdcmanon:main"
+gdcmconv = "_gdcm.scripts.gdcmconv:main"
+gdcmdiff = "_gdcm.scripts.gdcmdiff:main"
+gdcmdump = "_gdcm.scripts.gdcmdump:main"
+gdcmgendir = "_gdcm.scripts.gdcmgendir:main"
+gdcmimg = "_gdcm.scripts.gdcmimg:main"
+gdcminfo = "_gdcm.scripts.gdcminfo:main"
+gdcmpap3 = "_gdcm.scripts.gdcmpap3:main"
+gdcmraw = "_gdcm.scripts.gdcmraw:main"
+gdcmscanner = "_gdcm.scripts.gdcmscanner:main"
+gdcmscu = "_gdcm.scripts.gdcmscu:main"
+gdcmtar = "_gdcm.scripts.gdcmtar:main"
+gdcmxml = "_gdcm.scripts.gdcmxml:main"
 
 [project.urls]
 Homepage="https://github.com/tfmoraes/python-gdcm/"

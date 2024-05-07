@@ -10,7 +10,13 @@ import sys
 
 import gdcm
 
-path = os.path.dirname(gdcm.__file__)
-command = [os.path.join(path, "_gdcm", os.path.basename(sys.argv[0]))]
-command.extend(sys.argv[1:])
-subprocess.call(command)
+
+def main():
+    path = os.path.dirname(gdcm.__file__)
+    command = [os.path.join(path, "_gdcm", os.path.basename(sys.argv[0]))]
+    command.extend(sys.argv[1:])
+    subprocess.call(command)
+
+
+if __name__ == "__main__":
+    main()
