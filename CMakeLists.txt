@@ -14,10 +14,6 @@ else()
   set(GDCM_BUILD_SHARED_LIBS ON)
 endif(WIN32)
 
-if(LINUX)
-  set(PYTHON_LIBRARY "MANOLO")
-endif(LINUX)
-
 find_package(
   Python
   COMPONENTS Interpreter Development.Module
