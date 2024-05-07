@@ -233,7 +233,7 @@ jobs:
           pushd c:/
           git clone https://github.com/openssl/openssl.git
           pushd openssl
-          git checkout openssl-3.2.1
+          git checkout openssl-3.3.0
           perl Configure no-shared no-tests VC-WIN64A
           nmake
           mkdir lib\VC
@@ -248,7 +248,7 @@ jobs:
           pushd c:\
           git clone https://github.com/openssl/openssl.git
           pushd openssl
-          git checkout openssl-3.2.1
+          git checkout openssl-3.3.0
           perl Configure no-shared no-tests VC-WIN32
           nmake
           mkdir lib\VC
@@ -263,7 +263,7 @@ jobs:
           pushd /tmp
           git clone https://github.com/openssl/openssl.git
           pushd openssl
-          git checkout openssl-3.2.1
+          git checkout openssl-3.3.0
           ./Configure --prefix=/usr/local/openssl no-tests darwin64-${{ matrix.arch }}-cc
           make
           sudo make install
@@ -290,7 +290,7 @@ jobs:
             /opt/python/cp38-cp38/bin/python -m pip install ninja
             ln -s /opt/python/cp38-cp38/bin/ninja /usr/bin/ninja
             if [[ ! -e $(command -v swig) ]]; then
-              curl -L https://sourceforge.net/projects/swig/files/swig/swig-4.0.2/swig-4.0.2.tar.gz/download --output /tmp/swig.tar.gz
+              curl -L https://sourceforge.net/projects/swig/files/swig/swig-4.2.1/swig-4.2.1.tar.gz/download --output /tmp/swig.tar.gz
               mkdir /tmp/swig
               tar -xvzf /tmp/swig.tar.gz -C /tmp/swig --strip-components 1 &> /dev/null
               pushd /tmp/swig
