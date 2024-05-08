@@ -111,6 +111,11 @@ artifacts = [
 [tool.hatch.build.targets.wheel.hooks.scikit-build]
 experimental = true
 
+[tool.scikit-build]
+# cmake.verbose = true
+# logging.level = "INFO"
+# wheel.install-dir = "gdcm.libs"
+
 [tool.setuptools]
 py-modules=[ "gdcm", ]
 packages=[ "_gdcm", "_gdcm.scripts" ]
