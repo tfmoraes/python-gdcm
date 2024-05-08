@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.9.2 FATAL_ERROR)
 
-project(
-  python-gdcm
-  LANGUAGES CXX
-)
+project(${SKBUILD_PROJECT_NAME} LANGUAGES CXX C)
 
 include(CMakePrintHelpers)
 
@@ -14,26 +11,47 @@ SET(GDCM_BUILD_DOCBOOK_MANPAGES OFF)
 
 
 if(WIN32)
-  SET(DGDCM_BUILD_SHARED_LIBS OFF)
+  SET(GDCM_BUILD_SHARED_LIBS OFF)
 else()
-  SET(DGDCM_BUILD_SHARED_LIBS ON)
+  SET(GDCM_BUILD_SHARED_LIBS ON)
 endif(WIN32)
 
-find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
 
 SET(GDCM_WRAP_PYTHON ON)
 SET(GDCM_NO_PYTHON_LIBS_LINKING ON)
-SET(PYTHON_EXECUTABLE "${Python3_EXECUTABLE}")
-SET(PYTHON_INCLUDE_DIR "${Python3_INCLUDE_DIR}")
-SET(PYTHON_LIBRARY "${Python3_LIBRARIES}")
-
-cmake_print_variables(Python3_EXECUTABLE)
-cmake_print_variables(Python3_INCLUDE_DIR)
-cmake_print_variables(Python3_LIBRARIES)
-
-SET(EXECUTABLE_OUTPUT_PATH "${SKBUILD_PLATLIB_DIR}/_gdcm")
-SET(LIBRARY_OUTPUT_PATH "${SKBUILD_PLATLIB_DIR}/_gdcm")
+SET(PYTHON_EXECUTABLE "${Python_EXECUTABLE}")
 
 SET(GDCM_USE_SYSTEM_OPENSSL ON)
 
+# SET(PYTHON_INCLUDE_DIR "${Python_INCLUDE_DIR}")
+# SET(PYTHON_LIBRARY "${Python_LIBRARIES}")
+
+# cmake_print_variables(Python_EXECUTABLE)
+# cmake_print_variables(Python_INCLUDE_DIR)
+# cmake_print_variables(Python_LIBRARIES)
+cmake_print_variables(SKBUILD_HEADERS_DIR)
+cmake_print_variables(SKBUILD_DATA_DIR)
+cmake_print_variables(SKBUILD_SCRIPTS_DIR)
+cmake_print_variables(CMAKE_INSTALL_BINDIR)
+
+SET(EXECUTABLE_OUTPUT_PATH ${SKBUILD_PLATLIB_DIR}/_gdcm)
+SET(LIBRARY_OUTPUT_PATH ${SKBUILD_PLATLIB_DIR}/_gdcm)
+# SET(SKBUILD_DATA_DIR _gdcm)
+# SET(SKBUILD_SCRIPTS_DIR _gdcm)
+# SET(SKBUILD_LIB_DIR _gdcm)
+# SET(SKBUILD_HEADERS_DIR ${SKBUILD_NULL_DIR})
+SET(CMAKE_INSTALL_LIBDIR _gdcm)
+SET(CMAKE_INSTALL_BINDIR _gdcm)
+SET(CMAKE_INSTALL_INCLUDEDIR ${SKBUILD_NULL_DIR})
+
+cmake_print_variables(CMAKE_INSTALL_LIBDIR)
+
+cmake_print_variables(SKBUILD_HEADERS_DIR)
+cmake_print_variables(SKBUILD_DATA_DIR)
+cmake_print_variables(SKBUILD_SCRIPTS_DIR)
+cmake_print_variables(CMAKE_INSTALL_BINDIR)
+
 ADD_SUBDIRECTORY(gdcm_src)
+
+cmake_print_variables(CMAKE_INSTALL_BINDIR)

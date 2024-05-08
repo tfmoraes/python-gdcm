@@ -75,7 +75,6 @@ exclude = [
 [tool.hatch.build.targets.wheel]
 packages = ["_gdcm", "gdcm.py"]
 artifacts = [
-    "gdcm.py",
     "*.py",
     "*.so.*",
     "_gdcm*.so",
