@@ -6,11 +6,6 @@ requires = [
   "ninja >= 1.10.2.3",
   "cmake >= 3.22.1",
   "scikit-build-core~=0.9.0",
-  "hatchling",
-  "wheel",
-  "ninja >= 1.10.2.3",
-  "cmake >= 3.22.1",
-  "scikit-build-core~=0.9.0",
 ]
 
 [project]
