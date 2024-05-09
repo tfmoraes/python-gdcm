@@ -55,6 +55,7 @@ if(APPLE)
   set(CMAKE_INSTALL_RPATH "@loader_path")
   set(CMAKE_BUILD_RPATH "@loader_path")
 elseif(LINUX)
+  set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
   set(CMAKE_INSTALL_RPATH "\$ORIGIN")
 endif()
 
