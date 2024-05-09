@@ -1,44 +1,44 @@
 [build-system]
 build-backend = "hatchling.build"
 requires = [
-    "hatchling",
-    "wheel",
-    "ninja >= 1.10.2.3",
-    "cmake >= 3.22.1",
-    "scikit-build-core~=0.9.0",
+  "hatchling",
+  "wheel",
+  "ninja >= 1.10.2.3",
+  "cmake >= 3.22.1",
+  "scikit-build-core~=0.9.0",
 ]
 
 [project]
 name = "python-gdcm"
 version = "3.0.24.1"
 authors = [
-{name = "Thiago Franco de Moraes", email="totonixsame@gmail.com"},
+  { name = "Thiago Franco de Moraes", email = "totonixsame@gmail.com" },
 ]
-description="Grassroots DICOM runtime libraries"
+description = "Grassroots DICOM runtime libraries"
 readme = "README.md"
 requires-python = ">=3.7"
-classifiers=[
-    "Development Status :: 5 - Production/Stable",
-    "Environment :: Console",
-    "Intended Audience :: Developers",
-    "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: Apache Software License",
-    "Programming Language :: C",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: Implementation :: CPython",
-    "Topic :: Scientific/Engineering",
-    "Operating System :: Microsoft :: Windows",
-    "Operating System :: POSIX",
-    "Operating System :: Unix",
-    "Operating System :: MacOS",
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: C",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Topic :: Scientific/Engineering",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX",
+  "Operating System :: Unix",
+  "Operating System :: MacOS",
 ]
 
 [project.scripts]
@@ -57,55 +57,48 @@ gdcmtar = "_gdcm.scripts.gdcmtar:main"
 gdcmxml = "_gdcm.scripts.gdcmxml:main"
 
 [project.urls]
-Homepage="https://github.com/tfmoraes/python-gdcm/"
-issues="https://github.com/tfmoraes/python-gdcm/issues"
+Homepage = "https://github.com/tfmoraes/python-gdcm/"
+issues = "https://github.com/tfmoraes/python-gdcm/issues"
 
 [tool.hatch.build.targets.sdist]
-include = [
-  "gdcm.py",
-  "_gdcm/*",
-  "gdcm_src/*"
-]
-exclude = [
-  "gdcm_src/.*",
-  "gdcm_src/Testing",
-  ".gitignore"
-]
+include = ["gdcm.py", "_gdcm/*", "gdcm_src/*"]
+exclude = ["gdcm_src/.*", "gdcm_src/Testing", ".gitignore"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["_gdcm", "gdcm.py"]
 artifacts = [
-    "*.py",
-    "*.so.*",
-    "_gdcm*.so",
-    # Linux modules.
-    "*-linux-gnu.so",
-    # Unix shared libraries.
-    "lib*.so*",
-    # macOS modules.
-    "*-darwin.so",
-    # macOS shared libraries.
-    "lib*.dylib*",
-    # Windows modules.
-    "*.pyd",
-    # Windows shared libraries.
-    "*.dll",
-    # GDCM applications
-    "*.exe",
-    "gdcmanon",
-    "gdcmconv",
-    "gdcmdiff",
-    "gdcmdump",
-    "gdcmgendir",
-    "gdcmimg",
-    "gdcminfo",
-    "gdcmpap3",
-    "gdcmraw",
-    "gdcmscanner",
-    "gdcmscu",
-    "gdcmtar",
-    "gdcmxml",
-    "XML/*.xml",
+  "*.py",
+  "*.so.*",
+  "*.dylib*",
+  "_gdcm*.so",
+  # Linux modules.
+  "*-linux-gnu.so",
+  # Unix shared libraries.
+  "lib*.so*",
+  # macOS modules.
+  "*-darwin.so",
+  # macOS shared libraries.
+  "lib*.dylib*",
+  # Windows modules.
+  "*.pyd",
+  # Windows shared libraries.
+  "*.dll",
+  # GDCM applications
+  "*.exe",
+  "gdcmanon",
+  "gdcmconv",
+  "gdcmdiff",
+  "gdcmdump",
+  "gdcmgendir",
+  "gdcmimg",
+  "gdcminfo",
+  "gdcmpap3",
+  "gdcmraw",
+  "gdcmscanner",
+  "gdcmscu",
+  "gdcmtar",
+  "gdcmxml",
+  "XML/*.xml",
 ]
 
 [tool.hatch.build.targets.wheel.hooks.scikit-build]
@@ -117,42 +110,42 @@ experimental = true
 # wheel.install-dir = "gdcm.libs"
 
 [tool.setuptools]
-py-modules=[ "gdcm", ]
-packages=[ "_gdcm", "_gdcm.scripts" ]
-platforms=["Windows", "Linux", "Solaris", "Mac OS-X", "Unix"]
+py-modules = ["gdcm"]
+packages = ["_gdcm", "_gdcm.scripts"]
+platforms = ["Windows", "Linux", "Solaris", "Mac OS-X", "Unix"]
 include-package-data = true
 
 [too.setuptools.package-data]
 _gdcm = [
-    "*.py",
-    "*.so.*",
-    "_gdcm*.so",
-    # Linux modules.
-    "*-linux-gnu.so",
-    # Unix shared libraries.
-    "lib*.so*",
-    # macOS modules.
-    "*-darwin.so",
-    # macOS shared libraries.
-    "lib*.dylib*",
-    # Windows modules.
-    "*.pyd",
-    # Windows shared libraries.
-    "*.dll",
-    # GDCM applications
-    "*.exe",
-    "gdcmanon",
-    "gdcmconv",
-    "gdcmdiff",
-    "gdcmdump",
-    "gdcmgendir",
-    "gdcmimg",
-    "gdcminfo",
-    "gdcmpap3",
-    "gdcmraw",
-    "gdcmscanner",
-    "gdcmscu",
-    "gdcmtar",
-    "gdcmxml",
-    "XML/*.xml",
+  "*.py",
+  "*.so.*",
+  "_gdcm*.so",
+  # Linux modules.
+  "*-linux-gnu.so",
+  # Unix shared libraries.
+  "lib*.so*",
+  # macOS modules.
+  "*-darwin.so",
+  # macOS shared libraries.
+  "lib*.dylib*",
+  # Windows modules.
+  "*.pyd",
+  # Windows shared libraries.
+  "*.dll",
+  # GDCM applications
+  "*.exe",
+  "gdcmanon",
+  "gdcmconv",
+  "gdcmdiff",
+  "gdcmdump",
+  "gdcmgendir",
+  "gdcmimg",
+  "gdcminfo",
+  "gdcmpap3",
+  "gdcmraw",
+  "gdcmscanner",
+  "gdcmscu",
+  "gdcmtar",
+  "gdcmxml",
+  "XML/*.xml",
 ]
