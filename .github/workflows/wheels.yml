@@ -192,6 +192,7 @@ jobs:
             python: 313
             arch: arm64
             platform_id: macosx_arm64
+            macosx_deployment_target: "11.0"
 
     steps:
       - uses: actions/checkout@v4
