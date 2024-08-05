@@ -280,7 +280,7 @@ jobs:
           git clone https://github.com/openssl/openssl.git
           pushd openssl
           git checkout openssl-3.3.1
-          export MACOSX_DEPLOYMENT_TARGET="${{ macosx_deployment_target }}"
+          export MACOSX_DEPLOYMENT_TARGET="${{ matrix.macosx_deployment_target }}"
           ./Configure --prefix=/usr/local/openssl no-tests darwin64-${{ matrix.arch }}-cc
           make
           sudo make install
