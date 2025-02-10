@@ -191,6 +191,13 @@ class CMakeBuildExt(build_ext):
             super().build_extension(ext)
 
 
+SETUP_REQUIRES = []
+if CMAKE_EXE is None:
+    SETUP_REQUIRES += ["cmake >= 3.22.1"]
+if shutil.which("ninja") is None:
+    SETUP_REQUIRES += ["ninja >= 1.10.2.3"]
+
+
 setuptools.setup(
     ext_package="_gdcm",
     ext_modules=[
@@ -199,4 +206,5 @@ setuptools.setup(
     cmdclass={
         "build_ext": CMakeBuildExt,
     },
+    setup_requires=SETUP_REQUIRES,
 )
