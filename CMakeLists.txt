@@ -58,11 +58,6 @@ if(APPLE)
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -undefined dynamic_lookup -liconv")
   set(CMAKE_INSTALL_RPATH "@loader_path")
   set(CMAKE_BUILD_RPATH "@loader_path")
-  execute_process(
-      COMMAND sed -i "" -E "s/^[[:blank:]]*list\\(APPEND OPENJPEG_LIBRARY_PROPERTIES INSTALL_NAME_DIR \"\\$\\{CMAKE_INSTALL_PREFIX\\}\\/\\$\\{OPENJPEG_INSTALL_LIB_DIR\\}\\\")//"
-      ${CMAKE_SOURCE_DIR}/gdcm_src/Utilities/gdcmopenjpeg/CMakeLists.txt
-      RESULT_VARIABLE result
-  )
 elseif(LINUX)
   set(CMAKE_INSTALL_RPATH "\$ORIGIN")
 endif()
