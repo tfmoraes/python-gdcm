@@ -10,7 +10,7 @@ requires = [
 
 [project]
 name = "python-gdcm"
-version = "3.0.25"
+version = "3.0.24.1"
 authors = [
   { name = "Thiago Franco de Moraes", email = "totonixsame@gmail.com" },
 ]
@@ -32,6 +32,7 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: Implementation :: CPython",
   "Topic :: Scientific/Engineering",
@@ -108,44 +109,3 @@ experimental = true
 # cmake.verbose = true
 # logging.level = "INFO"
 # wheel.install-dir = "gdcm.libs"
-
-[tool.setuptools]
-py-modules = ["gdcm"]
-packages = ["_gdcm", "_gdcm.scripts"]
-platforms = ["Windows", "Linux", "Solaris", "Mac OS-X", "Unix"]
-include-package-data = true
-
-[too.setuptools.package-data]
-_gdcm = [
-  "*.py",
-  "*.so.*",
-  "_gdcm*.so",
-  # Linux modules.
-  "*-linux-gnu.so",
-  # Unix shared libraries.
-  "lib*.so*",
-  # macOS modules.
-  "*-darwin.so",
-  # macOS shared libraries.
-  "lib*.dylib*",
-  # Windows modules.
-  "*.pyd",
-  # Windows shared libraries.
-  "*.dll",
-  # GDCM applications
-  "*.exe",
-  "gdcmanon",
-  "gdcmconv",
-  "gdcmdiff",
-  "gdcmdump",
-  "gdcmgendir",
-  "gdcmimg",
-  "gdcminfo",
-  "gdcmpap3",
-  "gdcmraw",
-  "gdcmscanner",
-  "gdcmscu",
-  "gdcmtar",
-  "gdcmxml",
-  "XML/*.xml",
-]
