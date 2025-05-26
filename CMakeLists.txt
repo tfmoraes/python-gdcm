@@ -1,0 +1,66 @@
+cmake_minimum_required(VERSION 3.9.2 FATAL_ERROR)
+
+project(${SKBUILD_PROJECT_NAME} LANGUAGES CXX C)
+
+include(CMakePrintHelpers)
+
+set(GDCM_BUILD_APPLICATIONS ON)
+set(GDCM_DOCUMENTATION OFF)
+set(GDCM_BUILD_DOCBOOK_MANPAGES OFF)
+
+if(WIN32)
+  set(GDCM_BUILD_SHARED_LIBS OFF)
+else()
+  set(GDCM_BUILD_SHARED_LIBS ON)
+endif(WIN32)
+
+if(LINUX)
+  set(PYTHON_LIBRARY "MANOLO")
+endif(LINUX)
+
+find_package(
+  Python
+  COMPONENTS Interpreter Development.Module
+  REQUIRED)
+
+set(GDCM_WRAP_PYTHON ON)
+set(GDCM_NO_PYTHON_LIBS_LINKING ON)
+set(PYTHON_EXECUTABLE "${Python_EXECUTABLE}")
+
+set(GDCM_USE_SYSTEM_OPENSSL ON)
+
+# SET(PYTHON_INCLUDE_DIR "${Python_INCLUDE_DIR}") SET(PYTHON_LIBRARY
+# "${Python_LIBRARIES}")
+
+# cmake_print_variables(Python_EXECUTABLE)
+# cmake_print_variables(Python_INCLUDE_DIR)
+# cmake_print_variables(Python_LIBRARIES)
+# cmake_print_variables(SKBUILD_HEADERS_DIR)
+# cmake_print_variables(SKBUILD_DATA_DIR)
+# cmake_print_variables(SKBUILD_SCRIPTS_DIR)
+# cmake_print_variables(CMAKE_INSTALL_BINDIR)
+
+set(GDCM_INSTALL_BIN_DIR ${SKBUILD_PLATLIB_DIR}/_gdcm)
+set(GDCM_INSTALL_LIB_DIR ${SKBUILD_PLATLIB_DIR}/_gdcm)
+set(GDCM_INSTALL_DATA_DIR ${SKBUILD_PLATLIB_DIR}/_gdcm)
+set(GDCM_INSTALL_INCLUDE_DIR ${SKBUILD_NULL_DIR})
+set(GDCM_INSTALL_PACKAGE_DIR ${SKBUILD_NULL_DIR})
+
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+set(CMAKE_SKIP_BUILD_RPATH FALSE)
+set(CMAKE_SKIP_INSTALL_RPATH FALSE)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set(CMAKE_BUILD_RPATH_USE_ORIGIN TRUE)
+if(APPLE)
+  set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -undefined dynamic_lookup -liconv")
+  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -undefined dynamic_lookup -liconv")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -undefined dynamic_lookup -liconv")
+  set(CMAKE_INSTALL_RPATH "@loader_path")
+  set(CMAKE_BUILD_RPATH "@loader_path")
+elseif(LINUX)
+  set(CMAKE_INSTALL_RPATH "\$ORIGIN")
+endif()
+
+
+add_subdirectory(gdcm_src)

@@ -12,9 +12,6 @@ jobs:
         include:
           # Windows 32-bit
           - os: windows-2019
-            python: 37
-            platform_id: win32
-          - os: windows-2019
             python: 38
             platform_id: win32
           - os: windows-2019
@@ -34,9 +31,6 @@ jobs:
             platform_id: win32
 
           # Windows 64-bit
-          - os: windows-2019
-            python: 37
-            platform_id: win_amd64
           - os: windows-2019
             python: 38
             platform_id: win_amd64
@@ -58,9 +52,6 @@ jobs:
 
           # Linux 32-bit
           - os: ubuntu-latest
-            python: 37
-            platform_id: manylinux_i686
-          - os: ubuntu-latest
             python: 38
             platform_id: manylinux_i686
           - os: ubuntu-latest
@@ -80,9 +71,6 @@ jobs:
             platform_id: manylinux_i686
 
           # Linux 64-bit
-          - os: ubuntu-latest
-            python: 37
-            platform_id: manylinux_x86_64
           - os: ubuntu-latest
             python: 38
             platform_id: manylinux_x86_64
@@ -104,9 +92,6 @@ jobs:
 
           # Linux aarch64
           - os: ubuntu-latest
-            python: 37
-            platform_id: manylinux_aarch64
-          - os: ubuntu-latest
             python: 38
             platform_id: manylinux_aarch64
           - os: ubuntu-latest
@@ -127,11 +112,6 @@ jobs:
 
           # macOS on Intel 64-bit
           - os: macos-latest
-            python: 37
-            arch: x86_64
-            platform_id: macosx_x86_64
-            macosx_deployment_target: "10.9"
-          - os: macos-latest
             python: 38
             arch: x86_64
             platform_id: macosx_x86_64
@@ -156,6 +136,7 @@ jobs:
             arch: x86_64
             platform_id: macosx_x86_64
             macosx_deployment_target: "10.9"
+
           - os: macos-latest
             python: 313
             arch: x86_64
@@ -334,6 +315,8 @@ jobs:
           CIBW_ENVIRONMENT_MACOS: >
             CMAKE_OSX_ARCHITECTURES=${{ matrix.arch }}
             CMAKE_ARGS="-DGDCM_USE_SYSTEM_OPENSSL:BOOL=ON -DOPENSSL_ROOT_DIR=/usr/local/openssl -DOPENSSL_CRYPTO_LIBRARIES=/usr/local/openssl/lib/libcrypto.dylib -DOPENSSL_SSL_LIBRARIES=/usr/local/openssl/lib/libssl.dylib"
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: >
+            delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel} --ignore-missing-dependencies --sanitize-rpaths
 
           CIBW_TEST_COMMAND: python -c "import gdcm"
 
