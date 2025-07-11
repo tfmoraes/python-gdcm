@@ -10,26 +10,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Windows 32-bit
-          - os: windows-2019
-            python: 39
-            platform_id: win32
-          - os: windows-2019
-            python: 310
-            platform_id: win32
-          - os: windows-2019
-            python: 311
-            platform_id: win32
-          - os: windows-2019
-            python: 312
-            platform_id: win32
-          - os: windows-2019
-            python: 313
-            platform_id: win32
-          - os: windows-2019
-            python: 314
-            platform_id: win32
-
           # Windows 64-bit
           - os: windows-2019
             python: 39
@@ -49,26 +29,6 @@ jobs:
           - os: windows-2019
             python: 314
             platform_id: win_amd64
-
-          # Linux 32-bit
-          - os: ubuntu-latest
-            python: 39
-            platform_id: manylinux_i686
-          - os: ubuntu-latest
-            python: 310
-            platform_id: manylinux_i686
-          - os: ubuntu-latest
-            python: 311
-            platform_id: manylinux_i686
-          - os: ubuntu-latest
-            python: 312
-            platform_id: manylinux_i686
-          - os: ubuntu-latest
-            python: 313
-            platform_id: manylinux_i686
-          - os: ubuntu-latest
-            python: 314
-            platform_id: manylinux_i686
 
           # Linux 64-bit
           - os: ubuntu-latest
@@ -282,6 +242,7 @@ jobs:
 
           # Include latest Python beta
           CIBW_PRERELEASE_PYTHONS: True
+          CIBW_ENABLE: cpython-prerelease
 
           CIBW_BUILD_FRONTEND: build
 
