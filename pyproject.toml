@@ -10,7 +10,7 @@ requires = [
 
 [project]
 name = "python-gdcm"
-version = "3.0.24.1"
+version = "3.2.0"
 authors = [
   { name = "Thiago Franco de Moraes", email = "totonixsame@gmail.com" },
 ]
