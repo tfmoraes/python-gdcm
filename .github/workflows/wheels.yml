@@ -6,17 +6,16 @@ jobs:
   build_wheels:
     name: Build wheel for cp${{ matrix.python }}-${{ matrix.platform_id }}
     runs-on: ${{ matrix.os }}
+    env:
+      # OpenSSL version control
+      OPENSSL_VERSION: "openssl-3.5.2"
+      # SWIG version control
+      SWIG_VERSION: "4.3.1"
     strategy:
       fail-fast: false
       matrix:
         include:
           # Windows 32-bit
-          - os: windows-2022
-            python: 37
-            platform_id: win32
-          - os: windows-2022
-            python: 38
-            platform_id: win32
           - os: windows-2022
             python: 39
             platform_id: win32
@@ -31,12 +30,6 @@ jobs:
             platform_id: win32
 
           # Windows 64-bit
-          - os: windows-2022
-            python: 37
-            platform_id: win_amd64
-          - os: windows-2022
-            python: 38
-            platform_id: win_amd64
           - os: windows-2022
             python: 39
             platform_id: win_amd64
@@ -216,7 +209,7 @@ jobs:
           pushd c:/
           git clone https://github.com/openssl/openssl.git
           pushd openssl
-          git checkout openssl-3.3.0
+          git checkout ${{ env.OPENSSL_VERSION }}
           perl Configure no-shared no-tests VC-WIN64A
           nmake
           mkdir lib\VC
@@ -266,9 +259,9 @@ jobs:
       - name: Build wheels
         # to supply options, put them in 'env', like:
         env:
-          CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
-          CIBW_MANYLINUX_I686_IMAGE: manylinux2014
-          CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
+          CIBW_MANYLINUX_I686_IMAGE: manylinux_2_28
+          CIBW_MANYLINUX_AARCH64_IMAGE: manylinux_2_28
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
           CIBW_ARCHS_LINUX: auto aarch64
 
