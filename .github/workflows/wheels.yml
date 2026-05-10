@@ -121,17 +121,17 @@ jobs:
             macosx_deployment_target: "11.0"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: true
 
       - name: Set up QEMU
         if: runner.os == 'Linux'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v4
         with:
           platforms: all
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         name: Install Python host for cibuildwheel
         with:
           python-version: '3.11'
@@ -274,7 +274,7 @@ jobs:
 
         run: python -m cibuildwheel --output-dir wheelhouse
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           path: ./wheelhouse/*.whl
           name: artifact-${{ matrix.os }}-${{ matrix.platform_id }}-python-${{ matrix.python }}
@@ -282,11 +282,11 @@ jobs:
   build_sdist:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: true
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         name: Install Python host for sdist
         with:
           python-version: '3.11'
@@ -296,7 +296,7 @@ jobs:
           python -m pip install build
           python -m build --sdist
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           path: ./dist/*.tar.gz
           name: artifact-sdist
