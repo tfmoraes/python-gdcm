@@ -17,9 +17,6 @@ jobs:
         include:
           # Windows 64-bit
           - os: windows-2022
-            python: 39
-            platform_id: win_amd64
-          - os: windows-2022
             python: 310
             platform_id: win_amd64
           - os: windows-2022
@@ -36,9 +33,6 @@ jobs:
             platform_id: win_amd64
 
           # Linux 64-bit
-          - os: ubuntu-latest
-            python: 39
-            platform_id: manylinux_x86_64
           - os: ubuntu-latest
             python: 310
             platform_id: manylinux_x86_64
@@ -57,9 +51,6 @@ jobs:
 
           # Linux aarch64
           - os: ubuntu-latest
-            python: 39
-            platform_id: manylinux_aarch64
-          - os: ubuntu-latest
             python: 310
             platform_id: manylinux_aarch64
           - os: ubuntu-latest
@@ -76,11 +67,6 @@ jobs:
             platform_id: manylinux_aarch64
 
           # macOS on Intel 64-bit
-          - os: macos-latest
-            python: 39
-            arch: x86_64
-            platform_id: macosx_x86_64
-            macosx_deployment_target: "10.9"
           - os: macos-latest
             python: 310
             arch: x86_64
@@ -109,11 +95,6 @@ jobs:
 
           # macOS on Apple M1 64-bit
           - os: macos-latest
-            python: 39
-            arch: arm64
-            platform_id: macosx_arm64
-            macosx_deployment_target: "11.0"
-          - os: macos-latest
             python: 310
             arch: arm64
             platform_id: macosx_arm64
@@ -140,17 +121,17 @@ jobs:
             macosx_deployment_target: "11.0"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: true
 
       - name: Set up QEMU
         if: runner.os == 'Linux'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v4
         with:
           platforms: all
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         name: Install Python host for cibuildwheel
         with:
           python-version: '3.11'
@@ -240,7 +221,7 @@ jobs:
           sudo apt-get install --yes libssl-dev
 
       - name: Install cibuildwheel
-        run: python -m pip install cibuildwheel==3.1.4
+        run: python -m pip install cibuildwheel==3.4.1
 
       - name: Build wheels
         # to supply options, put them in 'env', like:
@@ -293,7 +274,7 @@ jobs:
 
         run: python -m cibuildwheel --output-dir wheelhouse
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           path: ./wheelhouse/*.whl
           name: artifact-${{ matrix.os }}-${{ matrix.platform_id }}-python-${{ matrix.python }}
@@ -301,11 +282,11 @@ jobs:
   build_sdist:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: true
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         name: Install Python host for sdist
         with:
           python-version: '3.11'
@@ -315,7 +296,7 @@ jobs:
           python -m pip install build
           python -m build --sdist
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           path: ./dist/*.tar.gz
           name: artifact-sdist
