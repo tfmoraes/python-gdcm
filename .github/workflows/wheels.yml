@@ -10,7 +10,7 @@ jobs:
       # OpenSSL version control
       OPENSSL_VERSION: "openssl-3.5.2"
       # SWIG version control
-      SWIG_VERSION: "4.3.1"
+      SWIG_VERSION: "4.5.1"
     strategy:
       fail-fast: false
       matrix:
